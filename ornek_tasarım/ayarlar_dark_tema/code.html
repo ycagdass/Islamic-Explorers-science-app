@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#000000",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }</script>
+<title>Bilim İnsanı Yönetim Paneli</title>
+</head>
+<body class="font-display bg-background-light dark:bg-black text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-80 border-r border-slate-200 dark:border-slate-800 flex flex-col bg-white dark:bg-black">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center gap-3">
+<div class="bg-primary p-2 rounded-lg text-white">
+<span class="material-symbols-outlined">auto_stories</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight">Bilim Paneli</h1>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-2">
+<p class="px-4 py-2 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Bilim İnsanları</p>
+<button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-white shadow-lg shadow-primary/20 transition-all">
+<span class="material-symbols-outlined">person</span>
+<span class="font-medium">Cahit Arf</span>
+</button>
+<button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-all">
+<span class="material-symbols-outlined text-slate-400">person</span>
+<span class="font-medium">Harezmi</span>
+</button>
+<button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-all">
+<span class="material-symbols-outlined text-slate-400">person</span>
+<span class="font-medium">Ali Kuşçu</span>
+</button>
+<button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-all">
+<span class="material-symbols-outlined text-slate-400">person</span>
+<span class="font-medium">İbn Sina</span>
+</button>
+<button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-all">
+<span class="material-symbols-outlined text-slate-400">person</span>
+<span class="font-medium">Uluğ Bey</span>
+</button>
+</div>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800 space-y-2">
+<button class="w-full flex items-center justify-between px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800">
+<span class="text-sm font-medium">Karanlık Mod</span>
+<span class="material-symbols-outlined text-primary">dark_mode</span>
+</button>
+<button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-all">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-medium">Çıkış Yap</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto flex flex-col">
+<!-- Header -->
+<header class="h-20 border-b border-slate-200 dark:border-slate-800 px-8 flex items-center justify-between bg-white/80 backdrop-blur-md sticky top-0 z-10 dark:bg-black/80">
+<div class="flex items-center gap-4">
+<div class="flex flex-col">
+<h2 class="text-lg font-bold">Profil Düzenle: Cahit Arf</h2>
+<p class="text-sm text-slate-500">Son güncelleme: 12 Dakika önce</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-xl focus:ring-2 focus:ring-primary w-64 text-sm dark:bg-slate-800 dark:text-white dark:border-slate-700" placeholder="Hızlı ara..." type="text"/>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-xl font-bold text-sm shadow-lg shadow-primary/20 transition-all">
+                        Değişiklikleri Kaydet
+                    </button>
+</div>
+</header>
+<div class="p-8 max-w-5xl mx-auto w-full space-y-8">
+<!-- Profile Section -->
+<section class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-start gap-8">
+<div class="relative group">
+<div class="w-32 h-32 rounded-full overflow-hidden border-4 border-slate-100 dark:border-slate-800 bg-slate-200 dark:bg-slate-700">
+<img class="w-full h-full object-cover" data-alt="Cahit Arf professional portrait photo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0PUsx0oklkDy30h2fR40qmSJKfNMEv-qqtNhM8ps1sjWoFq7arQnRaX3LnhtneCzOY8GbVByZiDQiJ7ajkXWO9F25H-xVc575F-olvb0efDSB7JESAakoHEeQfAGZf1x3IaF4JVg5zFCAw8YCTPYJgmjZTb-Oj9hMaJyGhetnjY-tFnRxfpJpNlsGTufAmpwc29DgwmTpfoFJc9M5trCnfLbNZ_LKSNzQ4LxJC0Fl9we0HdLA9uo1HInR04eCKvgxGTPA8VJl0bU"/>
+</div>
+<button class="absolute bottom-0 right-0 bg-primary text-white p-2 rounded-full shadow-lg hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-sm">photo_camera</span>
+</button>
+</div>
+<div class="flex-1 space-y-4">
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-1">
+<label class="text-xs font-bold text-slate-500 uppercase">Ad Soyad</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-primary dark:bg-slate-800 dark:text-white dark:border-slate-700" type="text" value="Cahit Arf"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-bold text-slate-500 uppercase">Unvan</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-primary dark:bg-slate-800 dark:text-white dark:border-slate-700" type="text" value="Matematikçi ve Bilim İnsanı"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- About Section -->
+<section class="space-y-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">history_edu</span>
+<h3 class="text-xl font-bold">Hakkında</h3>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<textarea class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-primary p-4 leading-relaxed text-slate-700 dark:text-slate-300 dark:bg-slate-800 dark:text-white dark:border-slate-700" placeholder="Bilim insanının biyografisini buraya yazın..." rows="6">Cahit Arf (1910 - 1997), dünyaca ünlü Türk matematikçidir. Arf Halkaları, Arf Değişmezi ve Arf Teoremi gibi çalışmalarıyla dünya matematik literatüründe kalıcı bir yer edinmiştir. 10 Türk Lirası banknotunun üzerinde resmi bulunmaktadır. "Matematik esas olarak sabır olayıdır. Belleyerek değil keşfederek anlamak gerekir." sözüyle tanınır.</textarea>
+</div>
+</section>
+<!-- Works Management Section -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">menu_book</span>
+<h3 class="text-xl font-bold">Eserleri</h3>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-xl font-bold text-sm hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined text-sm">add</span>
+                            Yeni Eser Ekle
+                        </button>
+</div>
+<div class="grid gap-3">
+<!-- Work Item 1 -->
+<div class="flex items-center justify-between p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl hover:border-primary/50 transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-primary/5 flex items-center justify-center text-primary font-bold">01</div>
+<div>
+<p class="font-bold">Arf Değişmezi (Arf Invariant)</p>
+<p class="text-xs text-slate-500">1941 • Makale / Teorem</p>
+</div>
+</div>
+<div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+<!-- Work Item 2 -->
+<div class="flex items-center justify-between p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl hover:border-primary/50 transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-primary/5 flex items-center justify-center text-primary font-bold">02</div>
+<div>
+<p class="font-bold">Sentetik Geometri Problemlerinin Cetvel ve Pergel Yardımıyla Çözülebilirliği</p>
+<p class="text-xs text-slate-500">1940 • Doktora Tezi</p>
+</div>
+</div>
+<div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+<!-- Work Item 3 -->
+<div class="flex items-center justify-between p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl hover:border-primary/50 transition-colors group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-primary/5 flex items-center justify-center text-primary font-bold">03</div>
+<div>
+<p class="font-bold">Cebirsel Sayı Kuramı Çalışmaları</p>
+<p class="text-xs text-slate-500">1950 • Kitap</p>
+</div>
+</div>
+<div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Spacer for bottom padding -->
+<div class="h-10"></div>
+</div>
+</main>
+</div>
+</body></html>

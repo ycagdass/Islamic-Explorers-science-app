@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html class="light" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: "Public Sans", sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen overflow-hidden">
+<div class="layout-container flex h-screen flex-col">
+<!-- Header / Top Nav -->
+<header class="flex items-center justify-between px-12 py-6 border-b border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-background-dark/50 backdrop-blur-md">
+<div class="flex items-center gap-4">
+<a class="flex items-center gap-2 group transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-primary group-hover:-translate-x-1 transition-transform">arrow_back</span>
+<span class="text-slate-700 dark:text-slate-300 font-medium text-lg">Geri Dön</span>
+</a>
+</div>
+<div class="flex items-center gap-3">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl">school</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Bilim İnsanları Portalı</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center size-12 rounded-xl bg-primary text-white hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">headphones</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area (Two Columns) -->
+<main class="flex-1 overflow-hidden p-12">
+<div class="grid grid-cols-12 gap-12 h-full">
+<!-- Left Column: Portrait & Summary -->
+<div class="col-span-5 flex flex-col gap-8">
+<div class="relative group h-full max-h-[600px] overflow-hidden rounded-3xl shadow-2xl">
+<div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent z-10"></div>
+<div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-105" data-alt="Dignified black and white portrait of Cahit Arf" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAE0bTjIqM65Kj5lBKDRMnlPMN0iPP-kBuU-DhYXnJxhN6mgh204TSMT4N84ZkewWrfcATjNG0yorSZZYGFa3ur5rHnjontnmGYuxtki7HUIZaCpbJTKKyM7-oV20Iyxdy6IeGDHsn4YqUykldhK8hzt-CYDLYvxFcH4PH1IAEs7LEZYDG8bLNOT82lcnHgpEkeHuM8VIKvFQXvRUsewQNpN7cTGCXNirBqsAeRv6hWpv_wdNXBnfo2vAi1ZonmPR4edNquEkPi3cY");'>
+</div>
+<div class="absolute bottom-0 left-0 p-10 z-20">
+<h2 class="text-5xl font-bold text-white mb-2">Cahit Arf</h2>
+<p class="text-primary font-medium text-xl tracking-wide uppercase">Matematikçi ve Bilim İnsanı</p>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900/50 p-8 rounded-2xl border border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-4 mb-4">
+<span class="material-symbols-outlined text-primary">calendar_today</span>
+<p class="text-slate-600 dark:text-slate-400 font-semibold">1910 — 1997</p>
+</div>
+<p class="text-lg text-slate-700 dark:text-slate-300 leading-relaxed italic">
+                            "Matematik esas olarak sabır işidir. Ezberleyerek değil, keşfederek anlamak gerekir."
+                        </p>
+</div>
+</div>
+<!-- Right Column: Detailed Sections -->
+<div class="col-span-7 flex flex-col gap-10 overflow-y-auto pr-6 custom-scrollbar">
+<!-- Section: Hakkında -->
+<section>
+<div class="flex items-center gap-3 mb-6">
+<div class="h-8 w-1 bg-primary rounded-full"></div>
+<h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Hakkında</h3>
+</div>
+<div class="bg-white dark:bg-slate-900/50 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 leading-loose text-slate-700 dark:text-slate-300 text-lg">
+                            Cahit Arf, Türk matematikçi ve bilim insanıdır. 1910 yılında Selanik'te doğan Arf, yükseköğrenimini Fransa'da Ecole Normale Superieure'de tamamlamıştır. Türkiye'de matematik biliminin öncülerinden biri olarak kabul edilir. TÜBİTAK'ın kuruluşunda büyük emeği geçmiş ve ilk bilim kolu başkanlığını yürütmüştür. 
+                            <br/><br/>
+                            Kendi adıyla anılan "Arf Değişmezi", "Arf Halkaları" ve "Arf Teoremi" gibi çalışmalarıyla dünya matematik literatürüne adını altın harflerle yazdırmıştır. 10 Türk Lirası banknotunun arka yüzünde portresi yer almaktadır.
+                        </div>
+</section>
+<!-- Section: Eserleri -->
+<section class="pb-12">
+<div class="flex items-center gap-3 mb-6">
+<div class="h-8 w-1 bg-primary rounded-full"></div>
+<h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Öne Çıkan Çalışmaları</h3>
+</div>
+<div class="grid grid-cols-1 gap-4">
+<div class="flex items-start gap-4 p-6 bg-primary/5 dark:bg-primary/10 rounded-xl border border-primary/20 hover:border-primary/40 transition-colors">
+<span class="material-symbols-outlined text-primary mt-1">functions</span>
+<div>
+<h4 class="font-bold text-slate-900 dark:text-slate-100 text-xl mb-1">Arf Değişmezi</h4>
+<p class="text-slate-600 dark:text-slate-400">Sentetik geometri problemlerinin çözümünde kullanılan cebirsel bir yapı.</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-6 bg-primary/5 dark:bg-primary/10 rounded-xl border border-primary/20 hover:border-primary/40 transition-colors">
+<span class="material-symbols-outlined text-primary mt-1">account_tree</span>
+<div>
+<h4 class="font-bold text-slate-900 dark:text-slate-100 text-xl mb-1">Arf Halkaları</h4>
+<p class="text-slate-600 dark:text-slate-400">Tekil noktaların sınıflandırılması üzerine geliştirilen matematiksel kavram.</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-6 bg-primary/5 dark:bg-primary/10 rounded-xl border border-primary/20 hover:border-primary/40 transition-colors">
+<span class="material-symbols-outlined text-primary mt-1">article</span>
+<div>
+<h4 class="font-bold text-slate-900 dark:text-slate-100 text-xl mb-1">Hasse-Arf Teoremi</h4>
+<p class="text-slate-600 dark:text-slate-400">Helmut Hasse ile birlikte geliştirdiği dallanma teorisi üzerine çalışma.</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+</div>
+<style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(236, 91, 19, 0.2);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(236, 91, 19, 0.4);
+        }
+    </style>
+</body></html>
