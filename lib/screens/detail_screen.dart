@@ -78,40 +78,47 @@ class _DetailScreenState extends State<DetailScreen>
               final isPhone = scale.screenType == ScreenType.phone;
 
               if (isPhone) {
+                // ── PHONE: Dikey tek sütun ──────────────────────────────────
                 return SingleChildScrollView(
                   padding: scale.pagePadding,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      _buildLeftColumn(scale: scale, isMobile: true),
+                      _buildPhotoSection(scale: scale),
+                      const SizedBox(height: 16),
+                      _buildAudioPlayer(scale: scale),
                       const SizedBox(height: 20),
                       _buildAboutSection(scale: scale, isMobile: true),
                       const SizedBox(height: 16),
                       _buildWorksSection(scale: scale, isMobile: true),
+                      const SizedBox(height: 16),
                     ],
                   ),
                 );
               } else {
-                // Tablet / büyük ekran: iki sütun
+                // ── TABLET: İki sütun ────────────────────────────────────────
+                // Sol: fotoğraf + isim + kısa bilgi
+                // Sağ: hakkında + eserleri + ses oynatıcı
                 return Padding(
                   padding: scale.pagePadding,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Sol kolon
                       SizedBox(
                         width: constraints.maxWidth * scale.detailLeftWidthRatio,
                         child: SingleChildScrollView(
-                          child: _buildLeftColumn(
-                            scale: scale,
-                            isMobile: false,
-                          ),
+                          child: _buildPhotoSection(scale: scale),
                         ),
                       ),
                       SizedBox(width: scale.cardSpacing),
+                      // Sağ kolon: hakkında + eserleri + ses oynatıcı
                       Expanded(
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Expanded(
+                              flex: 3,
                               child: _buildAboutSection(
                                 scale: scale,
                                 isMobile: false,
@@ -119,11 +126,15 @@ class _DetailScreenState extends State<DetailScreen>
                             ),
                             SizedBox(height: scale.cardRunSpacing),
                             Expanded(
+                              flex: 2,
                               child: _buildWorksSection(
                                 scale: scale,
                                 isMobile: false,
                               ),
                             ),
+                            SizedBox(height: scale.cardRunSpacing),
+                            // Ses oynatıcı sağ kolonda altta
+                            _buildAudioPlayer(scale: scale),
                           ],
                         ),
                       ),
@@ -138,7 +149,8 @@ class _DetailScreenState extends State<DetailScreen>
     );
   }
 
-  Widget _buildLeftColumn({required AppScale scale, required bool isMobile}) {
+  // ── Fotoğraf + isim + unvan bölümü ─────────────────────────────────────────
+  Widget _buildPhotoSection({required AppScale scale}) {
     final imageSize = scale.detailImageSize;
     final primary   = Theme.of(context).colorScheme.primary;
 
@@ -224,12 +236,11 @@ class _DetailScreenState extends State<DetailScreen>
           ),
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: scale.cardRunSpacing),
-        _buildAudioPlayer(scale: scale),
       ],
     );
   }
 
+  // ── Ses oynatıcı ─────────────────────────────────────────────────────────────
   Widget _buildAudioPlayer({required AppScale scale}) {
     return Card(
       elevation: 6,
@@ -340,89 +351,48 @@ class _DetailScreenState extends State<DetailScreen>
     );
   }
 
-  Widget _buildAboutSection(
-      {required AppScale scale, required bool isMobile}) {
-    final content = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Icon(
-              Icons.info_outline,
-              color: Theme.of(context).colorScheme.primary,
-              size: scale.iconSize,
-            ),
-            const SizedBox(width: 8),
-            Text(
-              "Hakkında",
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                fontSize:   scale.titleFontSize,
-              ),
-            ),
-          ],
-        ),
-        const Divider(height: 20),
-        if (isMobile)
-          Text(
-            widget.scientist.about,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              height: 1.6,
-              fontSize: scale.cardTitleFontSize,
-            ),
-          )
-        else
-          Expanded(
-            child: SingleChildScrollView(
-              child: Text(
-                widget.scientist.about,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  height: 1.6,
-                  fontSize: scale.cardTitleFontSize,
-                ),
-              ),
-            ),
-          ),
-      ],
-    );
-
+  // ── Hakkında bölümü ──────────────────────────────────────────────────────────
+  Widget _buildAboutSection({required AppScale scale, required bool isMobile}) {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: EdgeInsets.all(scale.cardSpacing * 0.8),
         child: isMobile
-            ? content
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _sectionHeader(
+                    context,
+                    Icons.info_outline,
+                    'Hakkında',
+                    scale,
+                  ),
+                  const Divider(height: 20),
+                  Text(
+                    widget.scientist.about,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      height: 1.6,
+                      fontSize: scale.cardTitleFontSize,
+                    ),
+                  ),
+                ],
+              )
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(children: [
-                    Icon(
-                      Icons.info_outline,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: scale.iconSize,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      "Hakkında",
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontSize: scale.titleFontSize,
-                      ),
-                    ),
-                  ]),
+                  _sectionHeader(
+                    context,
+                    Icons.info_outline,
+                    'Hakkında',
+                    scale,
+                  ),
                   const Divider(height: 20),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Text(
                         widget.scientist.about,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           height: 1.6,
                           fontSize: scale.cardTitleFontSize,
                         ),
@@ -435,8 +405,8 @@ class _DetailScreenState extends State<DetailScreen>
     );
   }
 
-  Widget _buildWorksSection(
-      {required AppScale scale, required bool isMobile}) {
+  // ── Eserleri bölümü ──────────────────────────────────────────────────────────
+  Widget _buildWorksSection({required AppScale scale, required bool isMobile}) {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -446,7 +416,12 @@ class _DetailScreenState extends State<DetailScreen>
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _worksHeader(scale),
+                  _sectionHeader(
+                    context,
+                    Icons.menu_book_rounded,
+                    'Eserleri',
+                    scale,
+                  ),
                   const Divider(height: 20),
                   Consumer<AppState>(
                     builder: (context, appState, child) {
@@ -472,7 +447,12 @@ class _DetailScreenState extends State<DetailScreen>
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _worksHeader(scale),
+                  _sectionHeader(
+                    context,
+                    Icons.menu_book_rounded,
+                    'Eserleri',
+                    scale,
+                  ),
                   const Divider(height: 20),
                   Expanded(
                     child: Consumer<AppState>(
@@ -501,17 +481,22 @@ class _DetailScreenState extends State<DetailScreen>
     );
   }
 
-  Widget _worksHeader(AppScale scale) {
+  Widget _sectionHeader(
+    BuildContext context,
+    IconData icon,
+    String title,
+    AppScale scale,
+  ) {
     return Row(
       children: [
         Icon(
-          Icons.menu_book_rounded,
+          icon,
           color: Theme.of(context).colorScheme.primary,
           size: scale.iconSize,
         ),
         const SizedBox(width: 8),
         Text(
-          "Eserleri",
+          title,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
             fontSize: scale.titleFontSize,

@@ -18,11 +18,23 @@ class AppState extends ChangeNotifier {
   AppScaleMode _scaleMode = AppScaleMode.auto;
   AppScaleMode get scaleMode => _scaleMode;
 
+  String _appName = 'Bilim İnsanları';
+  String get appName => _appName;
+
+  String? _appIconPath;
+  String? get appIconPath => _appIconPath;
+
+  bool _hasSeenOnboarding = false;
+  bool get hasSeenOnboarding => _hasSeenOnboarding;
+
   Future<void> init() async {
     // Single SharedPreferences access — loads theme, scientists and scaleMode.
     final loaded = await _storageService.loadAll();
-    _isDarkMode = loaded.isDark;
-    _scaleMode  = loaded.scaleMode;
+    _isDarkMode           = loaded.isDark;
+    _scaleMode            = loaded.scaleMode;
+    _appName              = loaded.appName;
+    _appIconPath          = loaded.appIconPath;
+    _hasSeenOnboarding    = loaded.hasSeenOnboarding;
 
     if (loaded.scientists != null && loaded.scientists!.isNotEmpty) {
       _scientists = loaded.scientists!;
@@ -47,6 +59,26 @@ class AppState extends ChangeNotifier {
     _scaleMode = mode;
     notifyListeners();
     await _storageService.saveScaleMode(mode);
+  }
+
+  Future<void> setAppName(String name) async {
+    if (_appName == name) return;
+    _appName = name.isEmpty ? 'Bilim İnsanları' : name;
+    notifyListeners();
+    await _storageService.saveAppName(_appName);
+  }
+
+  Future<void> setAppIconPath(String? path) async {
+    _appIconPath = path;
+    notifyListeners();
+    await _storageService.saveAppIconPath(path);
+  }
+
+  Future<void> markOnboardingSeen() async {
+    if (_hasSeenOnboarding) return;
+    _hasSeenOnboarding = true;
+    notifyListeners();
+    await _storageService.setHasSeenOnboarding(true);
   }
 
   Future<void> _saveScientists() async {

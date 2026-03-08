@@ -5,13 +5,12 @@ import 'package:provider/provider.dart';
 import 'providers/app_state.dart';
 import 'utils/app_theme.dart';
 import 'screens/home_screen.dart';
+import 'screens/onboarding_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Prevent Google Fonts from blocking startup with network requests.
-  // Fonts cached from a previous run are still served; first-run falls back
-  // to the system font until the cache is warm (no visible hang).
   GoogleFonts.config.allowRuntimeFetching = false;
 
   // Allow multiple orientations for responsive design across tablet & phone
@@ -47,12 +46,15 @@ class ScientistsApp extends StatelessWidget {
     }
 
     return MaterialApp(
-      title: 'Bilim İnsanları Uygulaması',
+      title: appState.appName,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: appState.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-      home: const HomeScreen(),
+      // İlk açılışta OnboardingScreen, sonrasında direkt HomeScreen
+      home: appState.hasSeenOnboarding
+          ? const HomeScreen()
+          : const OnboardingScreen(),
     );
   }
 }

@@ -12,17 +12,18 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appState  = context.watch<AppState>();
+    final appState   = context.watch<AppState>();
     final scientists = appState.scientists;
     final scaleMode  = appState.scaleMode;
+    final appName    = appState.appName;
 
     if (scientists.isEmpty) return const Scaffold(body: SizedBox());
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Bilim İnsanları',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          appName,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         actions: [
@@ -43,7 +44,6 @@ class HomeScreen extends StatelessWidget {
             final scale = ResponsiveHelper.compute(context, scaleMode);
             final isPhone = scale.screenType == ScreenType.phone;
 
-            // Ekrana sığacak kart düzeni — scroll son çare
             return _ScientistsLayout(
               scientists: scientists,
               scale: scale,
@@ -115,7 +115,6 @@ class _ScientistsLayout extends StatelessWidget {
       );
     }
 
-    // Scroll olmadan: Flex + Center ile tam ortala
     return Padding(
       padding: scale.pagePadding,
       child: Center(child: content),

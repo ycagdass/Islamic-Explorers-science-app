@@ -4,9 +4,12 @@ import '../models/scientist.dart';
 import '../utils/responsive_helper.dart';
 
 class StorageService {
-  static const String _themeKey      = 'isDarkMode';
-  static const String _scientistsKey = 'scientistsData';
-  static const String _scaleModeKey  = 'appScaleMode';
+  static const String _themeKey           = 'isDarkMode';
+  static const String _scientistsKey      = 'scientistsData';
+  static const String _scaleModeKey       = 'appScaleMode';
+  static const String _appNameKey         = 'appName';
+  static const String _appIconPathKey     = 'appIconPath';
+  static const String _hasSeenOnboarding  = 'hasSeenOnboarding';
 
   // Cached instance — SharedPreferences.getInstance() is called only once.
   SharedPreferences? _prefs;
@@ -17,7 +20,7 @@ class StorageService {
   }
 
   /// Loads theme, scientists and scaleMode in a single SharedPreferences access.
-  Future<({bool isDark, List<Scientist>? scientists, AppScaleMode scaleMode})> loadAll() async {
+  Future<({bool isDark, List<Scientist>? scientists, AppScaleMode scaleMode, String appName, String? appIconPath, bool hasSeenOnboarding})> loadAll() async {
     final prefs = await _getPrefs();
     final isDark = prefs.getBool(_themeKey) ?? false;
 
@@ -25,16 +28,25 @@ class StorageService {
     final scaleModeStr = prefs.getString(_scaleModeKey) ?? 'auto';
     final scaleMode = _scaleModeFromString(scaleModeStr);
 
+    // App name
+    final appName = prefs.getString(_appNameKey) ?? 'Bilim İnsanları';
+
+    // App icon path
+    final appIconPath = prefs.getString(_appIconPathKey);
+
+    // Has seen onboarding
+    final seenOnboarding = prefs.getBool(_hasSeenOnboarding) ?? false;
+
     // Scientists
     final data = prefs.getString(_scientistsKey);
     if (data == null) {
-      return (isDark: isDark, scientists: null, scaleMode: scaleMode);
+      return (isDark: isDark, scientists: null, scaleMode: scaleMode, appName: appName, appIconPath: appIconPath, hasSeenOnboarding: seenOnboarding);
     }
     final List<dynamic> jsonList = json.decode(data);
     final scientists = jsonList
         .map((j) => Scientist.fromJson(j as Map<String, dynamic>))
         .toList();
-    return (isDark: isDark, scientists: scientists, scaleMode: scaleMode);
+    return (isDark: isDark, scientists: scientists, scaleMode: scaleMode, appName: appName, appIconPath: appIconPath, hasSeenOnboarding: seenOnboarding);
   }
 
   Future<void> saveTheme(bool isDark) async {
@@ -72,6 +84,25 @@ class StorageService {
     if (data == null) return null;
     final List<dynamic> jsonList = json.decode(data);
     return jsonList.map((jsonItem) => Scientist.fromJson(jsonItem)).toList();
+  }
+
+  Future<void> saveAppName(String name) async {
+    final prefs = await _getPrefs();
+    await prefs.setString(_appNameKey, name);
+  }
+
+  Future<void> saveAppIconPath(String? path) async {
+    final prefs = await _getPrefs();
+    if (path == null) {
+      await prefs.remove(_appIconPathKey);
+    } else {
+      await prefs.setString(_appIconPathKey, path);
+    }
+  }
+
+  Future<void> setHasSeenOnboarding(bool value) async {
+    final prefs = await _getPrefs();
+    await prefs.setBool(_hasSeenOnboarding, value);
   }
 
   // ─ Yardımcılar ─────────────────────────────────────────────────────────────
