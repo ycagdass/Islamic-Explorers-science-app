@@ -12,8 +12,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appState = context.watch<AppState>();
+    final appState  = context.watch<AppState>();
     final scientists = appState.scientists;
+    final scaleMode  = appState.scaleMode;
 
     if (scientists.isEmpty) return const Scaffold(body: SizedBox());
 
@@ -39,42 +40,101 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final isMobile = ResponsiveHelper.isMobile(context);
-            final padding = ResponsiveHelper.getPadding(context);
+            final scale = ResponsiveHelper.compute(context, scaleMode);
+            final isPhone = scale.screenType == ScreenType.phone;
 
-            return SingleChildScrollView(
-              padding: padding,
-              child: Center(
-                child: Wrap(
-                  spacing: isMobile ? 24 : 48,
-                  runSpacing: isMobile ? 32 : 48,
-                  alignment: WrapAlignment.center,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: scientists
-                      .map((s) => _buildCircularCard(context, s))
-                      .toList(),
-                ),
-              ),
+            // Ekrana sığacak kart düzeni — scroll son çare
+            return _ScientistsLayout(
+              scientists: scientists,
+              scale: scale,
+              isPhone: isPhone,
+              constraints: constraints,
             );
           },
         ),
       ),
     );
   }
+}
 
-  Widget _buildCircularCard(BuildContext context, Scientist scientist) {
-    // Dynamic size based on screen width
-    final screenWidth = MediaQuery.of(context).size.width;
-    double size;
-    if (ResponsiveHelper.isMobile(context)) {
-      size = (screenWidth - 80) / 2; // 2 items per row
-      if (size > 180) size = 180;
-      if (size < 120) size = 120;
-    } else {
-      size = (screenWidth - 200) / 3; // 3 items per row roughly
-      if (size > 260) size = 260;
-      if (size < 180) size = 180;
+// ─── Akıllı layout widget ────────────────────────────────────────────────────
+
+class _ScientistsLayout extends StatelessWidget {
+  final List<Scientist> scientists;
+  final AppScale scale;
+  final bool isPhone;
+  final BoxConstraints constraints;
+
+  const _ScientistsLayout({
+    required this.scientists,
+    required this.scale,
+    required this.isPhone,
+    required this.constraints,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // Kart + etiket yüksekliği tahmini (labelHeight = cardSize * 0.45)
+    final double cardH = scale.cardSize + scale.cardSize * 0.45 + scale.cardRunSpacing;
+
+    // Toplam wrap alanı tahmini yüksekliği
+    int rows;
+    switch (scale.screenType) {
+      case ScreenType.phone:
+        rows = 3; // 2-2-1
+      case ScreenType.smallTablet:
+        rows = 2; // 3-2
+      case ScreenType.mediumTablet:
+      case ScreenType.largeTablet:
+        rows = 1; // hepsi tek sıra
     }
+
+    final double estimatedH = rows * cardH + scale.pagePadding.vertical;
+    final bool needsScroll  = estimatedH > constraints.maxHeight;
+
+    final Widget content = Center(
+      child: Wrap(
+        spacing:          scale.cardSpacing,
+        runSpacing:       scale.cardRunSpacing,
+        alignment:        WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: scientists
+            .map(
+              (s) => RepaintBoundary(
+                child: _ScientistCard(scientist: s, scale: scale),
+              ),
+            )
+            .toList(),
+      ),
+    );
+
+    if (needsScroll) {
+      return SingleChildScrollView(
+        padding: scale.pagePadding,
+        child: content,
+      );
+    }
+
+    // Scroll olmadan: Flex + Center ile tam ortala
+    return Padding(
+      padding: scale.pagePadding,
+      child: Center(child: content),
+    );
+  }
+}
+
+// ─── Bilim insanı kartı ──────────────────────────────────────────────────────
+
+class _ScientistCard extends StatelessWidget {
+  final Scientist scientist;
+  final AppScale scale;
+
+  const _ScientistCard({required this.scientist, required this.scale});
+
+  @override
+  Widget build(BuildContext context) {
+    final size    = scale.cardSize;
+    final primary = Theme.of(context).colorScheme.primary;
 
     return Material(
       color: Colors.transparent,
@@ -88,39 +148,31 @@ class HomeScreen extends StatelessWidget {
           );
         },
         customBorder: const CircleBorder(),
-        splashColor: Theme.of(
-          context,
-        ).colorScheme.primary.withValues(alpha: 0.2),
-        hoverColor: Theme.of(
-          context,
-        ).colorScheme.primary.withValues(alpha: 0.1),
+        splashColor: primary.withValues(alpha: 0.2),
+        hoverColor:  primary.withValues(alpha: 0.1),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(4.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              // Fotoğraf dairesi
               Container(
                 width: size,
                 height: size,
                 padding: EdgeInsets.all(size * 0.05),
                 decoration: BoxDecoration(
-                  color:
-                      Theme.of(context).cardTheme.color ??
+                  color: Theme.of(context).cardTheme.color ??
                       Theme.of(context).cardColor,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.2),
-                      blurRadius: 16,
-                      offset: const Offset(0, 6),
+                      color: primary.withValues(alpha: 0.22),
+                      blurRadius: 14,
+                      offset: const Offset(0, 5),
                     ),
                   ],
                   border: Border.all(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary.withValues(alpha: 0.5),
+                    color: primary.withValues(alpha: 0.5),
                     width: 2,
                   ),
                 ),
@@ -131,39 +183,38 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: size * 0.08),
+              // İsim & unvan etiketi
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 8,
+                padding: EdgeInsets.symmetric(
+                  horizontal: size * 0.12,
+                  vertical:   size * 0.05,
                 ),
                 constraints: BoxConstraints(maxWidth: size * 1.2),
                 decoration: BoxDecoration(
-                  color:
-                      Theme.of(
-                        context,
-                      ).cardTheme.color?.withValues(alpha: 0.95) ??
-                      Theme.of(context).cardColor.withValues(alpha: 0.95),
+                  color: (Theme.of(context).cardTheme.color ??
+                          Theme.of(context).cardColor)
+                      .withValues(alpha: 0.95),
                   borderRadius: BorderRadius.circular(50),
                   border: Border.all(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary.withValues(alpha: 0.2),
+                    color: primary.withValues(alpha: 0.2),
                   ),
                   boxShadow: const [
                     BoxShadow(
                       color: Colors.black12,
-                      blurRadius: 8,
-                      offset: Offset(0, 3),
+                      blurRadius: 6,
+                      offset: Offset(0, 2),
                     ),
                   ],
                 ),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       scientist.name,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.bold,
+                        fontSize:   scale.cardTitleFontSize,
                       ),
                       textAlign: TextAlign.center,
                       maxLines: 1,
@@ -173,9 +224,10 @@ class HomeScreen extends StatelessWidget {
                     Text(
                       scientist.title.toUpperCase(),
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1.2,
+                        color:       primary,
+                        fontWeight:  FontWeight.w600,
+                        letterSpacing: 0.8,
+                        fontSize:    scale.cardSubtitleFontSize,
                       ),
                       textAlign: TextAlign.center,
                       maxLines: 2,

@@ -9,6 +9,7 @@ import 'dart:io';
 import '../providers/app_state.dart';
 import '../models/scientist.dart';
 import '../services/auth_service.dart';
+import '../utils/responsive_helper.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -53,6 +54,22 @@ class SettingsScreen extends StatelessWidget {
                         context,
                         CupertinoPageRoute(
                           builder: (_) => const _ThemeSettingsPage(),
+                        ),
+                      );
+                    },
+                  ),
+                  _buildDivider(isDark),
+                  _buildSettingsRow(
+                    context,
+                    icon: CupertinoIcons.resize,
+                    iconBgColor: Colors.teal,
+                    title: 'Görünüm Ölçeği',
+                    trailing: _buildChevronRow(context),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (_) => const _ScaleSettingsPage(),
                         ),
                       );
                     },
@@ -308,8 +325,151 @@ class _ThemeSettingsPage extends StatelessWidget {
   }
 }
 
-// ─── IMAGE MANAGEMENT PAGE ──────────────────────────────────────────────────
+// ─── SCALE SETTINGS PAGE ────────────────────────────────────────────────────
 
+class _ScaleSettingsPage extends StatelessWidget {
+  const _ScaleSettingsPage();
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark   = Theme.of(context).brightness == Brightness.dark;
+    final bgColor  = isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7);
+    final cardColor = isDark ? const Color(0xFF2C2C2E) : Colors.white;
+
+    final options = [
+      (AppScaleMode.auto,   'Otomatik', 'Cihaz boyutuna göre en uygun ölçek',       CupertinoIcons.sparkles),
+      (AppScaleMode.small,  'Küçük',    'Daha fazla içerik, daha küçük elemanlar',   CupertinoIcons.minus_circle),
+      (AppScaleMode.medium, 'Orta',     'Dengeli görünüm',                           CupertinoIcons.circle),
+      (AppScaleMode.large,  'Büyük',    'Daha az içerik, daha büyük elemanlar',      CupertinoIcons.plus_circle),
+    ];
+
+    return Scaffold(
+      backgroundColor: bgColor,
+      appBar: AppBar(
+        backgroundColor: bgColor,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        leading: IconButton(
+          icon: const Icon(CupertinoIcons.back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text('Görünüm Ölçeği'),
+        centerTitle: true,
+      ),
+      body: Consumer<AppState>(
+        builder: (context, appState, child) {
+          return ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            children: [
+              // Açıklama
+              Padding(
+                padding: const EdgeInsets.only(left: 16, bottom: 8),
+                child: Text(
+                  'Tüm ekranlar seçilen ölçeğe göre yeniden hesaplanır.',
+                  style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: cardColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  children: options.asMap().entries.map((entry) {
+                    final i       = entry.key;
+                    final mode    = entry.value.$1;
+                    final label   = entry.value.$2;
+                    final desc    = entry.value.$3;
+                    final iconDt  = entry.value.$4;
+                    final selected = appState.scaleMode == mode;
+
+                    return Column(
+                      children: [
+                        if (i > 0)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 60),
+                            child: Divider(
+                              height: 1,
+                              color: isDark
+                                  ? Colors.white12
+                                  : Colors.grey.shade200,
+                            ),
+                          ),
+                        InkWell(
+                          onTap: () => appState.setScaleMode(mode),
+                          borderRadius: BorderRadius.circular(12),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 30,
+                                  height: 30,
+                                  decoration: BoxDecoration(
+                                    color: selected
+                                        ? Theme.of(context).colorScheme.primary
+                                        : Colors.teal,
+                                    borderRadius: BorderRadius.circular(7),
+                                  ),
+                                  child: Icon(
+                                    iconDt,
+                                    color: Colors.white,
+                                    size: 16,
+                                  ),
+                                ),
+                                const SizedBox(width: 14),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        label,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: selected
+                                              ? FontWeight.w600
+                                              : FontWeight.normal,
+                                        ),
+                                      ),
+                                      Text(
+                                        desc,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey.shade500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                if (selected)
+                                  Icon(
+                                    CupertinoIcons.checkmark_alt,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    size: 20,
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+// ─── IMAGE MANAGEMENT PAGE ──────────────────────────────────────────────────
 class _ImageManagementPage extends StatelessWidget {
   const _ImageManagementPage();
 

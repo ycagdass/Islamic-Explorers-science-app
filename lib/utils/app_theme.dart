@@ -6,7 +6,11 @@ class AppTheme {
   static const Color backgroundLight = Color(0xFFf8f6f6);
   static const Color backgroundDark = Color(0xFF221610);
 
-  static ThemeData get lightTheme {
+  // Cached as static final — computed once, reused on every theme rebuild.
+  static final ThemeData lightTheme = _buildLight();
+  static final ThemeData darkTheme = _buildDark();
+
+  static ThemeData _buildLight() {
     return ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
@@ -25,7 +29,7 @@ class AppTheme {
     );
   }
 
-  static ThemeData get darkTheme {
+  static ThemeData _buildDark() {
     return ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(

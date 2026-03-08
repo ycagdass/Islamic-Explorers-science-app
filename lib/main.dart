@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'providers/app_state.dart';
 import 'utils/app_theme.dart';
@@ -7,6 +8,11 @@ import 'screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Prevent Google Fonts from blocking startup with network requests.
+  // Fonts cached from a previous run are still served; first-run falls back
+  // to the system font until the cache is warm (no visible hang).
+  GoogleFonts.config.allowRuntimeFetching = false;
 
   // Allow multiple orientations for responsive design across tablet & phone
   await SystemChrome.setPreferredOrientations([
