@@ -16,29 +16,28 @@ import '../utils/responsive_helper.dart';
 // ─────────────────────────────────────────────────────────────────────────────
 
 Widget _sectionHeader(String title) => Padding(
-      padding: const EdgeInsets.only(left: 16, bottom: 6, top: 4),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w400,
-          color: Colors.grey,
-        ),
-      ),
-    );
+  padding: const EdgeInsets.only(left: 16, bottom: 6, top: 4),
+  child: Text(
+    title,
+    style: const TextStyle(
+      fontSize: 13,
+      fontWeight: FontWeight.w400,
+      color: Colors.grey,
+    ),
+  ),
+);
 
 Widget _groupedCard(
   BuildContext context,
   bool isDark, {
   required List<Widget> children,
-}) =>
-    Container(
-      decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF2C2C2E) : Colors.white,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(children: children),
-    );
+}) => Container(
+  decoration: BoxDecoration(
+    color: isDark ? const Color(0xFF2C2C2E) : Colors.white,
+    borderRadius: BorderRadius.circular(12),
+  ),
+  child: Column(children: children),
+);
 
 Widget _settingsRow(
   BuildContext context, {
@@ -48,51 +47,50 @@ Widget _settingsRow(
   String? subtitle,
   required Widget trailing,
   VoidCallback? onTap,
-}) =>
-    InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Row(
-          children: [
-            Container(
-              width: 30,
-              height: 30,
-              decoration: BoxDecoration(
-                color: iconBgColor,
-                borderRadius: BorderRadius.circular(7),
-              ),
-              child: Icon(icon, color: Colors.white, size: 18),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(title, style: const TextStyle(fontSize: 16)),
-                  if (subtitle != null)
-                    Text(
-                      subtitle,
-                      style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
-                    ),
-                ],
-              ),
-            ),
-            trailing,
-          ],
+}) => InkWell(
+  onTap: onTap,
+  borderRadius: BorderRadius.circular(12),
+  child: Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    child: Row(
+      children: [
+        Container(
+          width: 30,
+          height: 30,
+          decoration: BoxDecoration(
+            color: iconBgColor,
+            borderRadius: BorderRadius.circular(7),
+          ),
+          child: Icon(icon, color: Colors.white, size: 18),
         ),
-      ),
-    );
+        const SizedBox(width: 14),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(title, style: const TextStyle(fontSize: 16)),
+              if (subtitle != null)
+                Text(
+                  subtitle,
+                  style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+                ),
+            ],
+          ),
+        ),
+        trailing,
+      ],
+    ),
+  ),
+);
 
 Widget _divider(bool isDark) => Padding(
-      padding: const EdgeInsets.only(left: 60),
-      child: Divider(
-        height: 1,
-        color: isDark ? Colors.white12 : Colors.grey.shade200,
-      ),
-    );
+  padding: const EdgeInsets.only(left: 60),
+  child: Divider(
+    height: 1,
+    color: isDark ? Colors.white12 : Colors.grey.shade200,
+  ),
+);
 
 const Widget _chevron = Icon(
   CupertinoIcons.chevron_right,
@@ -109,8 +107,8 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark   = Theme.of(context).brightness == Brightness.dark;
-    final bgColor  = isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7);
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -132,120 +130,160 @@ class SettingsScreen extends StatelessWidget {
             children: [
               // ── İÇERİK YÖNETİMİ ──────────────────────────────────────────
               _sectionHeader('İÇERİK YÖNETİMİ'),
-              _groupedCard(context, isDark, children: [
-                _settingsRow(
-                  context,
-                  icon: CupertinoIcons.paintbrush,
-                  iconBgColor: Colors.deepPurple,
-                  title: 'Tema Ayarı',
-                  subtitle: appState.isDarkMode ? 'Karanlık' : 'Açık',
-                  trailing: _chevron,
-                  onTap: () => Navigator.push(context,
-                      CupertinoPageRoute(builder: (_) => const _ThemeSettingsPage())),
-                ),
-                _divider(isDark),
-                _settingsRow(
-                  context,
-                  icon: CupertinoIcons.resize,
-                  iconBgColor: Colors.teal,
-                  title: 'Görünüm Ölçeği',
-                  trailing: _chevron,
-                  onTap: () => Navigator.push(context,
-                      CupertinoPageRoute(builder: (_) => const _ScaleSettingsPage())),
-                ),
-                _divider(isDark),
-                _settingsRow(
-                  context,
-                  icon: CupertinoIcons.photo,
-                  iconBgColor: Colors.orange,
-                  title: 'Görsel Yönetimi',
-                  subtitle: 'Bilim insanı fotoğrafları',
-                  trailing: _chevron,
-                  onTap: () => Navigator.push(context,
-                      CupertinoPageRoute(builder: (_) => const _ImageManagementPage())),
-                ),
-                _divider(isDark),
-                _settingsRow(
-                  context,
-                  icon: CupertinoIcons.music_note,
-                  iconBgColor: Colors.red,
-                  title: 'Ses Yönetimi',
-                  subtitle: 'Sesli anlatım dosyaları',
-                  trailing: _chevron,
-                  onTap: () => Navigator.push(context,
-                      CupertinoPageRoute(builder: (_) => const _AudioManagementPage())),
-                ),
-                _divider(isDark),
-                _settingsRow(
-                  context,
-                  icon: CupertinoIcons.doc_text,
-                  iconBgColor: Colors.blue,
-                  title: 'İçerik Düzenleme',
-                  subtitle: 'Hakkında ve eserler',
-                  trailing: _chevron,
-                  onTap: () => Navigator.push(context,
-                      CupertinoPageRoute(builder: (_) => const _ContentManagementPage())),
-                ),
-                _divider(isDark),
-                _settingsRow(
-                  context,
-                  icon: CupertinoIcons.app_badge,
-                  iconBgColor: Colors.indigo,
-                  title: 'Uygulama Adı',
-                  subtitle: appState.appName,
-                  trailing: _chevron,
-                  onTap: () => Navigator.push(context,
-                      CupertinoPageRoute(builder: (_) => const _AppNameSettingsPage())),
-                ),
-                _divider(isDark),
-                _settingsRow(
-                  context,
-                  icon: CupertinoIcons.app,
-                  iconBgColor: Colors.green,
-                  title: 'Uygulama İkonu',
-                  subtitle: appState.appIconPath != null
-                      ? 'Özel ikon seçildi'
-                      : 'Varsayılan ikon',
-                  trailing: _chevron,
-                  onTap: () => Navigator.push(context,
-                      CupertinoPageRoute(builder: (_) => const _AppIconSettingsPage())),
-                ),
-              ]),
+              _groupedCard(
+                context,
+                isDark,
+                children: [
+                  _settingsRow(
+                    context,
+                    icon: CupertinoIcons.paintbrush,
+                    iconBgColor: Colors.deepPurple,
+                    title: 'Tema Ayarı',
+                    subtitle: appState.isDarkMode ? 'Karanlık' : 'Açık',
+                    trailing: _chevron,
+                    onTap: () => Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (_) => const _ThemeSettingsPage(),
+                      ),
+                    ),
+                  ),
+                  _divider(isDark),
+                  _settingsRow(
+                    context,
+                    icon: CupertinoIcons.resize,
+                    iconBgColor: Colors.teal,
+                    title: 'Görünüm Ölçeği',
+                    trailing: _chevron,
+                    onTap: () => Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (_) => const _ScaleSettingsPage(),
+                      ),
+                    ),
+                  ),
+                  _divider(isDark),
+                  _settingsRow(
+                    context,
+                    icon: CupertinoIcons.photo,
+                    iconBgColor: Colors.orange,
+                    title: 'Görsel Yönetimi',
+                    subtitle: 'Bilim insanı fotoğrafları',
+                    trailing: _chevron,
+                    onTap: () => Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (_) => const _ImageManagementPage(),
+                      ),
+                    ),
+                  ),
+                  _divider(isDark),
+                  _settingsRow(
+                    context,
+                    icon: CupertinoIcons.music_note,
+                    iconBgColor: Colors.red,
+                    title: 'Ses Yönetimi',
+                    subtitle: 'Sesli anlatım dosyaları',
+                    trailing: _chevron,
+                    onTap: () => Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (_) => const _AudioManagementPage(),
+                      ),
+                    ),
+                  ),
+                  _divider(isDark),
+                  _settingsRow(
+                    context,
+                    icon: CupertinoIcons.doc_text,
+                    iconBgColor: Colors.blue,
+                    title: 'İçerik Düzenleme',
+                    subtitle: 'Hakkında ve eserler',
+                    trailing: _chevron,
+                    onTap: () => Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (_) => const _ContentManagementPage(),
+                      ),
+                    ),
+                  ),
+                  _divider(isDark),
+                  _settingsRow(
+                    context,
+                    icon: CupertinoIcons.app_badge,
+                    iconBgColor: Colors.indigo,
+                    title: 'Uygulama Başlığı',
+                    subtitle: appState.appName,
+                    trailing: _chevron,
+                    onTap: () => Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (_) => const _AppNameSettingsPage(),
+                      ),
+                    ),
+                  ),
+                  _divider(isDark),
+                  _settingsRow(
+                    context,
+                    icon: CupertinoIcons.app,
+                    iconBgColor: Colors.green,
+                    title: 'Karşılama Ekranı Logosu',
+                    subtitle: appState.appIconPath != null
+                        ? 'Özel logo seçildi'
+                        : 'Varsayılan logo',
+                    trailing: _chevron,
+                    onTap: () => Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (_) => const _AppIconSettingsPage(),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
 
               const SizedBox(height: 24),
 
               // ── HAKKINDA ─────────────────────────────────────────────────
               _sectionHeader('HAKKINDA'),
-              _groupedCard(context, isDark, children: [
-                _settingsRow(
-                  context,
-                  icon: CupertinoIcons.info_circle,
-                  iconBgColor: Colors.blueGrey,
-                  title: 'Uygulama Hakkında',
-                  trailing: _chevron,
-                  onTap: () => _showAboutDialog(context),
-                ),
-              ]),
+              _groupedCard(
+                context,
+                isDark,
+                children: [
+                  _settingsRow(
+                    context,
+                    icon: CupertinoIcons.info_circle,
+                    iconBgColor: Colors.blueGrey,
+                    title: 'Uygulama Hakkında',
+                    trailing: _chevron,
+                    onTap: () => _showAboutDialog(context),
+                  ),
+                ],
+              ),
 
               const SizedBox(height: 24),
 
               // ── HESAP ─────────────────────────────────────────────────────
               _sectionHeader('HESAP'),
-              _groupedCard(context, isDark, children: [
-                _settingsRow(
-                  context,
-                  icon: CupertinoIcons.lock_open,
-                  iconBgColor: Colors.grey,
-                  title: 'Oturumu Kapat',
-                  trailing: _chevron,
-                  onTap: () async {
-                    final authService = AuthService();
-                    await authService.init();
-                    await authService.setRememberMe(false);
-                    if (context.mounted) Navigator.pop(context);
-                  },
-                ),
-              ]),
+              _groupedCard(
+                context,
+                isDark,
+                children: [
+                  _settingsRow(
+                    context,
+                    icon: CupertinoIcons.lock_open,
+                    iconBgColor: Colors.grey,
+                    title: 'Oturumu Kapat',
+                    trailing: _chevron,
+                    onTap: () async {
+                      final authService = AuthService();
+                      await authService.init();
+                      await authService.setRememberMe(false);
+                      if (context.mounted) Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
               const SizedBox(height: 40),
             ],
           );
@@ -279,7 +317,7 @@ class _ThemeSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark  = Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7);
 
     return Scaffold(
@@ -306,7 +344,10 @@ class _ThemeSettingsPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   child: Row(
                     children: [
                       Container(
@@ -316,11 +357,18 @@ class _ThemeSettingsPage extends StatelessWidget {
                           color: Colors.indigo,
                           borderRadius: BorderRadius.circular(7),
                         ),
-                        child: const Icon(CupertinoIcons.moon_fill, color: Colors.white, size: 18),
+                        child: const Icon(
+                          CupertinoIcons.moon_fill,
+                          color: Colors.white,
+                          size: 18,
+                        ),
                       ),
                       const SizedBox(width: 14),
                       const Expanded(
-                        child: Text('Karanlık Mod', style: TextStyle(fontSize: 16)),
+                        child: Text(
+                          'Karanlık Mod',
+                          style: TextStyle(fontSize: 16),
+                        ),
                       ),
                       CupertinoSwitch(
                         value: appState.isDarkMode,
@@ -348,15 +396,30 @@ class _ScaleSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark    = Theme.of(context).brightness == Brightness.dark;
-    final bgColor   = isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7);
     final cardColor = isDark ? const Color(0xFF2C2C2E) : Colors.white;
 
     final options = [
-      (AppScaleMode.auto,   'Otomatik', 'Cihaz boyutuna göre en uygun ölçek',      CupertinoIcons.sparkles),
-      (AppScaleMode.small,  'Küçük',    'Daha fazla içerik, daha küçük elemanlar',  CupertinoIcons.minus_circle),
-      (AppScaleMode.medium, 'Orta',     'Dengeli görünüm',                          CupertinoIcons.circle),
-      (AppScaleMode.large,  'Büyük',    'Daha az içerik, daha büyük elemanlar',     CupertinoIcons.plus_circle),
+      (
+        AppScaleMode.auto,
+        'Otomatik',
+        'Cihaz boyutuna göre en uygun ölçek',
+        CupertinoIcons.sparkles,
+      ),
+      (
+        AppScaleMode.small,
+        'Küçük',
+        'Daha fazla içerik, daha küçük elemanlar',
+        CupertinoIcons.minus_circle,
+      ),
+      (AppScaleMode.medium, 'Orta', 'Dengeli görünüm', CupertinoIcons.circle),
+      (
+        AppScaleMode.large,
+        'Büyük',
+        'Daha az içerik, daha büyük elemanlar',
+        CupertinoIcons.plus_circle,
+      ),
     ];
 
     return Scaffold(
@@ -391,10 +454,10 @@ class _ScaleSettingsPage extends StatelessWidget {
                 ),
                 child: Column(
                   children: options.asMap().entries.map((entry) {
-                    final i        = entry.key;
-                    final mode     = entry.value.$1;
-                    final label    = entry.value.$2;
-                    final desc     = entry.value.$3;
+                    final i = entry.key;
+                    final mode = entry.value.$1;
+                    final label = entry.value.$2;
+                    final desc = entry.value.$3;
                     final iconData = entry.value.$4;
                     final selected = appState.scaleMode == mode;
 
@@ -405,7 +468,10 @@ class _ScaleSettingsPage extends StatelessWidget {
                           onTap: () => appState.setScaleMode(mode),
                           borderRadius: BorderRadius.circular(12),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
                             child: Row(
                               children: [
                                 Container(
@@ -417,23 +483,33 @@ class _ScaleSettingsPage extends StatelessWidget {
                                         : Colors.teal,
                                     borderRadius: BorderRadius.circular(7),
                                   ),
-                                  child: Icon(iconData, color: Colors.white, size: 16),
+                                  child: Icon(
+                                    iconData,
+                                    color: Colors.white,
+                                    size: 16,
+                                  ),
                                 ),
                                 const SizedBox(width: 14),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         label,
                                         style: TextStyle(
                                           fontSize: 16,
-                                          fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
+                                          fontWeight: selected
+                                              ? FontWeight.w600
+                                              : FontWeight.normal,
                                         ),
                                       ),
                                       Text(
                                         desc,
-                                        style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey.shade500,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -441,7 +517,9 @@ class _ScaleSettingsPage extends StatelessWidget {
                                 if (selected)
                                   Icon(
                                     CupertinoIcons.checkmark_alt,
-                                    color: Theme.of(context).colorScheme.primary,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
                                     size: 20,
                                   ),
                               ],
@@ -470,7 +548,7 @@ class _ImageManagementPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark  = Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7);
 
     return Scaffold(
@@ -498,15 +576,19 @@ class _ImageManagementPage extends StatelessWidget {
                 ),
                 child: Column(
                   children: appState.scientists.asMap().entries.map((entry) {
-                    final index     = entry.key;
+                    final index = entry.key;
                     final scientist = entry.value;
                     return Column(
                       children: [
                         if (index > 0) _divider(isDark),
                         InkWell(
-                          onTap: () => _pickAndCropImage(context, appState, scientist),
+                          onTap: () =>
+                              _pickAndCropImage(context, appState, scientist),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
                             child: Row(
                               children: [
                                 ClipRRect(
@@ -514,23 +596,36 @@ class _ImageManagementPage extends StatelessWidget {
                                   child: SizedBox(
                                     width: 44,
                                     height: 44,
-                                    child: _buildImageWidget(scientist.imagePath),
+                                    child: _buildImageWidget(
+                                      scientist.imagePath,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 14),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text(scientist.name, style: const TextStyle(fontSize: 16)),
+                                      Text(
+                                        scientist.name,
+                                        style: const TextStyle(fontSize: 16),
+                                      ),
                                       Text(
                                         'Görseli değiştir',
-                                        style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color: Colors.grey.shade500,
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                const Icon(CupertinoIcons.camera, size: 20, color: Colors.grey),
+                                const Icon(
+                                  CupertinoIcons.camera,
+                                  size: 20,
+                                  color: Colors.grey,
+                                ),
                                 const SizedBox(width: 4),
                                 _chevron,
                               ],
@@ -551,11 +646,17 @@ class _ImageManagementPage extends StatelessWidget {
 
   Widget _buildImageWidget(String path) {
     if (path.startsWith('http')) {
-      return Image.network(path, fit: BoxFit.cover,
-          errorBuilder: (_, e, s) => const Icon(Icons.person));
+      return Image.network(
+        path,
+        fit: BoxFit.cover,
+        errorBuilder: (_, e, s) => const Icon(Icons.person),
+      );
     } else {
-      return Image.file(File(path), fit: BoxFit.cover,
-          errorBuilder: (_, e, s) => const Icon(Icons.person));
+      return Image.file(
+        File(path),
+        fit: BoxFit.cover,
+        errorBuilder: (_, e, s) => const Icon(Icons.person),
+      );
     }
   }
 
@@ -565,8 +666,8 @@ class _ImageManagementPage extends StatelessWidget {
     Scientist scientist,
   ) async {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final picker       = ImagePicker();
-    final pickedFile   = await picker.pickImage(source: ImageSource.gallery);
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile == null) return;
 
     try {
@@ -616,7 +717,7 @@ class _AudioManagementPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark  = Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7);
 
     return Scaffold(
@@ -644,25 +745,32 @@ class _AudioManagementPage extends StatelessWidget {
                 ),
                 child: Column(
                   children: appState.scientists.asMap().entries.map((entry) {
-                    final index     = entry.key;
+                    final index = entry.key;
                     final scientist = entry.value;
-                    final hasAudio  = scientist.audioUrl != null &&
+                    final hasAudio =
+                        scientist.audioUrl != null &&
                         scientist.audioUrl!.isNotEmpty;
 
                     return Column(
                       children: [
                         if (index > 0) _divider(isDark),
                         InkWell(
-                          onTap: () => _pickAudioFile(context, appState, scientist),
+                          onTap: () =>
+                              _pickAudioFile(context, appState, scientist),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
                             child: Row(
                               children: [
                                 Container(
                                   width: 30,
                                   height: 30,
                                   decoration: BoxDecoration(
-                                    color: hasAudio ? Colors.green : Colors.grey,
+                                    color: hasAudio
+                                        ? Colors.green
+                                        : Colors.grey,
                                     borderRadius: BorderRadius.circular(7),
                                   ),
                                   child: Icon(
@@ -676,20 +784,37 @@ class _AudioManagementPage extends StatelessWidget {
                                 const SizedBox(width: 14),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text(scientist.name, style: const TextStyle(fontSize: 16)),
                                       Text(
-                                        hasAudio ? 'Ses dosyası mevcut' : 'Ses dosyası ekle',
-                                        style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
+                                        scientist.name,
+                                        style: const TextStyle(fontSize: 16),
+                                      ),
+                                      Text(
+                                        hasAudio
+                                            ? 'Ses dosyası mevcut'
+                                            : 'Ses dosyası ekle',
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          color: Colors.grey.shade500,
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
                                 if (hasAudio)
                                   IconButton(
-                                    icon: const Icon(CupertinoIcons.delete, color: Colors.red, size: 18),
-                                    onPressed: () => appState.updateScientistAudio(scientist.id, null),
+                                    icon: const Icon(
+                                      CupertinoIcons.delete,
+                                      color: Colors.red,
+                                      size: 18,
+                                    ),
+                                    onPressed: () =>
+                                        appState.updateScientistAudio(
+                                          scientist.id,
+                                          null,
+                                        ),
                                   ),
                                 _chevron,
                               ],
@@ -731,7 +856,7 @@ class _ContentManagementPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark  = Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7);
 
     return Scaffold(
@@ -759,7 +884,7 @@ class _ContentManagementPage extends StatelessWidget {
                 ),
                 child: Column(
                   children: appState.scientists.asMap().entries.map((entry) {
-                    final index     = entry.key;
+                    final index = entry.key;
                     final scientist = entry.value;
                     return Column(
                       children: [
@@ -773,7 +898,10 @@ class _ContentManagementPage extends StatelessWidget {
                             ),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
                             child: Row(
                               children: [
                                 Container(
@@ -783,11 +911,18 @@ class _ContentManagementPage extends StatelessWidget {
                                     color: Colors.blue,
                                     borderRadius: BorderRadius.circular(7),
                                   ),
-                                  child: const Icon(CupertinoIcons.person, color: Colors.white, size: 18),
+                                  child: const Icon(
+                                    CupertinoIcons.person,
+                                    color: Colors.white,
+                                    size: 18,
+                                  ),
                                 ),
                                 const SizedBox(width: 14),
                                 Expanded(
-                                  child: Text(scientist.name, style: const TextStyle(fontSize: 16)),
+                                  child: Text(
+                                    scientist.name,
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
                                 ),
                                 _chevron,
                               ],
@@ -836,8 +971,8 @@ class _ScientistContentPageState extends State<_ScientistContentPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark    = Theme.of(context).brightness == Brightness.dark;
-    final bgColor   = isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7);
     final cardColor = isDark ? const Color(0xFF2C2C2E) : Colors.white;
 
     return Scaffold(
@@ -866,12 +1001,16 @@ class _ScientistContentPageState extends State<_ScientistContentPage> {
               // HAKKINDA
               Padding(
                 padding: const EdgeInsets.only(left: 16, bottom: 6),
-                child: Text('HAKKINDA',
-                    style: TextStyle(fontSize: 13, color: Colors.grey.shade500)),
+                child: Text(
+                  'HAKKINDA',
+                  style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
+                ),
               ),
               Container(
                 decoration: BoxDecoration(
-                    color: cardColor, borderRadius: BorderRadius.circular(12)),
+                  color: cardColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -881,7 +1020,9 @@ class _ScientistContentPageState extends State<_ScientistContentPage> {
                       maxLines: 5,
                       maxLength: 2000,
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                         hintText: 'Hakkında bilgisini giriniz...',
                       ),
                     ),
@@ -891,7 +1032,9 @@ class _ScientistContentPageState extends State<_ScientistContentPage> {
                       child: CupertinoButton.filled(
                         onPressed: () {
                           appState.updateScientistAbout(
-                              widget.scientist.id, _aboutController.text);
+                            widget.scientist.id,
+                            _aboutController.text,
+                          );
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Hakkında bilgisi kaydedildi'),
@@ -912,8 +1055,13 @@ class _ScientistContentPageState extends State<_ScientistContentPage> {
                 padding: const EdgeInsets.only(left: 16, bottom: 6),
                 child: Row(
                   children: [
-                    Text('ESERLERİ',
-                        style: TextStyle(fontSize: 13, color: Colors.grey.shade500)),
+                    Text(
+                      'ESERLERİ',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey.shade500,
+                      ),
+                    ),
                     const Spacer(),
                     CupertinoButton(
                       padding: EdgeInsets.zero,
@@ -926,7 +1074,9 @@ class _ScientistContentPageState extends State<_ScientistContentPage> {
               ),
               Container(
                 decoration: BoxDecoration(
-                    color: cardColor, borderRadius: BorderRadius.circular(12)),
+                  color: cardColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 child: Column(
                   children: [
                     if (scientist.works.isEmpty)
@@ -936,29 +1086,53 @@ class _ScientistContentPageState extends State<_ScientistContentPage> {
                       )
                     else
                       ...scientist.works.asMap().entries.map((entry) {
-                        final i    = entry.key;
+                        final i = entry.key;
                         final work = entry.value;
                         return Column(
                           children: [
                             if (i > 0) _divider(isDark),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 10,
+                              ),
                               child: Row(
                                 children: [
                                   const Icon(CupertinoIcons.book, size: 18),
                                   const SizedBox(width: 14),
                                   Expanded(
-                                    child: Text(work, style: const TextStyle(fontSize: 16)),
+                                    child: Text(
+                                      work,
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
                                   ),
                                   IconButton(
-                                    icon: const Icon(CupertinoIcons.pencil, size: 18, color: Colors.blue),
-                                    onPressed: () => _showEditWorkDialog(context, appState, i, work),
+                                    icon: const Icon(
+                                      CupertinoIcons.pencil,
+                                      size: 18,
+                                      color: Colors.blue,
+                                    ),
+                                    onPressed: () => _showEditWorkDialog(
+                                      context,
+                                      appState,
+                                      i,
+                                      work,
+                                    ),
                                   ),
                                   IconButton(
-                                    icon: const Icon(CupertinoIcons.delete, size: 18, color: Colors.red),
+                                    icon: const Icon(
+                                      CupertinoIcons.delete,
+                                      size: 18,
+                                      color: Colors.red,
+                                    ),
                                     onPressed: () {
-                                      final newWorks = List<String>.from(scientist.works)..removeAt(i);
-                                      appState.updateScientistWorks(widget.scientist.id, newWorks);
+                                      final newWorks = List<String>.from(
+                                        scientist.works,
+                                      )..removeAt(i);
+                                      appState.updateScientistWorks(
+                                        widget.scientist.id,
+                                        newWorks,
+                                      );
                                     },
                                   ),
                                 ],
@@ -1001,8 +1175,10 @@ class _ScientistContentPageState extends State<_ScientistContentPage> {
             onPressed: () {
               if (newWork.isNotEmpty) {
                 final scientist = appState.scientists.firstWhere(
-                    (s) => s.id == widget.scientist.id);
-                final newWorks = List<String>.from(scientist.works)..add(newWork);
+                  (s) => s.id == widget.scientist.id,
+                );
+                final newWorks = List<String>.from(scientist.works)
+                  ..add(newWork);
                 appState.updateScientistWorks(widget.scientist.id, newWorks);
               }
               Navigator.pop(context);
@@ -1043,7 +1219,8 @@ class _ScientistContentPageState extends State<_ScientistContentPage> {
             onPressed: () {
               if (editWork.isNotEmpty) {
                 final scientist = appState.scientists.firstWhere(
-                    (s) => s.id == widget.scientist.id);
+                  (s) => s.id == widget.scientist.id,
+                );
                 final newWorks = List<String>.from(scientist.works);
                 newWorks[index] = editWork;
                 appState.updateScientistWorks(widget.scientist.id, newWorks);
@@ -1087,8 +1264,8 @@ class _AppNameSettingsPageState extends State<_AppNameSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark    = Theme.of(context).brightness == Brightness.dark;
-    final bgColor   = isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7);
     final cardColor = isDark ? const Color(0xFF2C2C2E) : Colors.white;
 
     return Scaffold(
@@ -1101,7 +1278,7 @@ class _AppNameSettingsPageState extends State<_AppNameSettingsPage> {
           icon: const Icon(CupertinoIcons.back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Uygulama Adı'),
+        title: const Text('Uygulama Başlığı'),
         centerTitle: true,
       ),
       body: Consumer<AppState>(
@@ -1112,7 +1289,7 @@ class _AppNameSettingsPageState extends State<_AppNameSettingsPage> {
               Padding(
                 padding: const EdgeInsets.only(left: 16, bottom: 8),
                 child: Text(
-                  'Uygulama adı ana sayfada ve karşılama ekranında gösterilir.',
+                  'Uygulama başlığı; ana sayfa üst çubuğunda ve karşılama ekranında gösterilir.',
                   style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
                 ),
               ),
@@ -1129,8 +1306,10 @@ class _AppNameSettingsPageState extends State<_AppNameSettingsPage> {
                       controller: _nameController,
                       maxLength: 50,
                       decoration: InputDecoration(
-                        labelText: 'Uygulama Adı',
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                        labelText: 'Başlık',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                         hintText: 'Bilim İnsanları',
                         prefixIcon: const Icon(Icons.title),
                       ),
@@ -1140,7 +1319,9 @@ class _AppNameSettingsPageState extends State<_AppNameSettingsPage> {
                       width: double.infinity,
                       child: CupertinoButton.filled(
                         onPressed: () async {
-                          await appState.setAppName(_nameController.text.trim());
+                          await appState.setAppName(
+                            _nameController.text.trim(),
+                          );
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -1174,10 +1355,10 @@ class _AppIconSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark    = Theme.of(context).brightness == Brightness.dark;
-    final bgColor   = isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7);
     final cardColor = isDark ? const Color(0xFF2C2C2E) : Colors.white;
-    final primary   = Theme.of(context).colorScheme.primary;
+    final primary = Theme.of(context).colorScheme.primary;
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -1189,7 +1370,7 @@ class _AppIconSettingsPage extends StatelessWidget {
           icon: const Icon(CupertinoIcons.back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Uygulama İkonu'),
+        title: const Text('Karşılama Ekranı Logosu'),
         centerTitle: true,
       ),
       body: Consumer<AppState>(
@@ -1227,9 +1408,17 @@ class _AppIconSettingsPage extends StatelessWidget {
                                 File(appState.appIconPath!),
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) =>
-                                    Icon(Icons.science_outlined, size: 48, color: primary),
+                                    Icon(
+                                      Icons.science_outlined,
+                                      size: 48,
+                                      color: primary,
+                                    ),
                               )
-                            : Icon(Icons.science_outlined, size: 48, color: primary),
+                            : Icon(
+                                Icons.science_outlined,
+                                size: 48,
+                                color: primary,
+                              ),
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -1237,7 +1426,10 @@ class _AppIconSettingsPage extends StatelessWidget {
                       appState.appIconPath != null
                           ? 'Özel ikon seçildi'
                           : 'Varsayılan ikon kullanılıyor',
-                      style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey.shade500,
+                      ),
                     ),
                   ],
                 ),
@@ -1256,7 +1448,10 @@ class _AppIconSettingsPage extends StatelessWidget {
                       onTap: () => _pickAndCropIcon(context, appState),
                       borderRadius: BorderRadius.circular(12),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 14,
+                        ),
                         child: Row(
                           children: [
                             Container(
@@ -1266,7 +1461,11 @@ class _AppIconSettingsPage extends StatelessWidget {
                                 color: Colors.green,
                                 borderRadius: BorderRadius.circular(7),
                               ),
-                              child: const Icon(CupertinoIcons.photo_on_rectangle, color: Colors.white, size: 16),
+                              child: const Icon(
+                                CupertinoIcons.photo_on_rectangle,
+                                color: Colors.white,
+                                size: 16,
+                              ),
                             ),
                             const SizedBox(width: 14),
                             const Expanded(
@@ -1296,7 +1495,10 @@ class _AppIconSettingsPage extends StatelessWidget {
                         },
                         borderRadius: BorderRadius.circular(12),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 14,
+                          ),
                           child: Row(
                             children: [
                               Container(
@@ -1306,13 +1508,20 @@ class _AppIconSettingsPage extends StatelessWidget {
                                   color: Colors.red,
                                   borderRadius: BorderRadius.circular(7),
                                 ),
-                                child: const Icon(CupertinoIcons.delete, color: Colors.white, size: 16),
+                                child: const Icon(
+                                  CupertinoIcons.delete,
+                                  color: Colors.white,
+                                  size: 16,
+                                ),
                               ),
                               const SizedBox(width: 14),
                               const Expanded(
                                 child: Text(
                                   'Varsayılana Döndür',
-                                  style: TextStyle(fontSize: 16, color: Colors.red),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.red,
+                                  ),
                                 ),
                               ),
                             ],
@@ -1328,8 +1537,12 @@ class _AppIconSettingsPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
-                  'Not: Seçilen görsel karşılama ekranında logo olarak kullanılır.',
-                  style: TextStyle(fontSize: 12, color: Colors.grey.shade500, height: 1.5),
+                  'Galeriden seçtiğin görsel karşılama ekranında logo olarak görünür.\n\nNot: Telefon uygulama listesindeki (launcher) simge build sırasında belirlenir; uygulama içinden değiştirilemez.',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey.shade500,
+                    height: 1.5,
+                  ),
                 ),
               ),
             ],
@@ -1341,8 +1554,8 @@ class _AppIconSettingsPage extends StatelessWidget {
 
   Future<void> _pickAndCropIcon(BuildContext context, AppState appState) async {
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final picker       = ImagePicker();
-    final pickedFile   = await picker.pickImage(source: ImageSource.gallery);
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile == null) return;
 
     try {
