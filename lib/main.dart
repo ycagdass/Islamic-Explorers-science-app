@@ -21,6 +21,16 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
+  // Edge-to-edge display: transparent system bars, content extends behind them
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarDividerColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
+    ),
+  );
+
   final appState = AppState();
   await appState.init();
 
@@ -46,7 +56,7 @@ class ScientistsApp extends StatelessWidget {
     }
 
     return MaterialApp(
-      title: appState.appName,
+      title: 'Bilim İnsanları',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,

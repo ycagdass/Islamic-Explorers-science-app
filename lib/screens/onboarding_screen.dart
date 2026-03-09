@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/app_state.dart';
 import 'home_screen.dart';
-import 'dart:io';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -74,7 +73,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
 
   @override
   Widget build(BuildContext context) {
-    final appState   = context.watch<AppState>();
     final primary    = Theme.of(context).colorScheme.primary;
     final isDark     = Theme.of(context).brightness == Brightness.dark;
     final size       = MediaQuery.of(context).size;
@@ -118,7 +116,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                         opacity: _fadeAnim,
                         child: ScaleTransition(
                           scale: _scaleAnim,
-                          child: _buildLogo(context, appState, primary, isTablet),
+                          child: _buildLogo(context, primary, isTablet),
                         ),
                       ),
 
@@ -130,7 +128,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                         child: FadeTransition(
                           opacity: _fadeAnim,
                           child: Text(
-                            appState.appName,
+                            'Bilim İnsanları',
                             style: TextStyle(
                               fontSize: isTablet ? 36 : 28,
                               fontWeight: FontWeight.bold,
@@ -247,38 +245,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     );
   }
 
-  Widget _buildLogo(
-    BuildContext context,
-    AppState appState,
-    Color primary,
-    bool isTablet,
-  ) {
+  Widget _buildLogo(BuildContext context, Color primary, bool isTablet) {
     final logoSize = isTablet ? 140.0 : 110.0;
 
-    if (appState.appIconPath != null) {
-      // Kullanıcının seçtiği ikon
-      return Container(
-        width: logoSize,
-        height: logoSize,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: primary, width: 3),
-          boxShadow: [
-            BoxShadow(
-              color: primary.withValues(alpha: 0.3),
-              blurRadius: 24,
-              spreadRadius: 4,
-            ),
-          ],
-          image: DecorationImage(
-            image: FileImage(File(appState.appIconPath!)),
-            fit: BoxFit.cover,
-          ),
-        ),
-      );
-    }
-
-    // Varsayılan ikon
     return Container(
       width: logoSize,
       height: logoSize,

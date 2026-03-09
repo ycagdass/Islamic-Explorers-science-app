@@ -131,13 +131,21 @@ class _BackgroundPainter extends CustomPainter {
   void _harezmi(Canvas canvas, Size size, Random rng) {
     // === HERO ELEMENT: Köşeye büyük sayı/formül bloğu ===
     // Sol üst: büyük "al-jabr" yazısı
-    _txt(canvas, 'al-jabr', Offset(size.width * 0.03, size.height * 0.04),
-        size.width * 0.10,
-        alpha: _textAlpha * 1.1);
+    _txt(
+      canvas,
+      'al-jabr',
+      Offset(size.width * 0.03, size.height * 0.04),
+      size.width * 0.10,
+      alpha: _textAlpha * 1.1,
+    );
     // Sağ alt: büyük eşitlik sembolü
-    _txt(canvas, 'x²+bx+c=0',
-        Offset(size.width * 0.35, size.height * 0.84), size.width * 0.07,
-        alpha: _textAlpha * 1.0);
+    _txt(
+      canvas,
+      'x²+bx+c=0',
+      Offset(size.width * 0.35, size.height * 0.84),
+      size.width * 0.07,
+      alpha: _textAlpha * 1.0,
+    );
 
     // Katman 1: Büyük cebirsel ifadeler (belirgin metin)
     final exprs = [
@@ -156,9 +164,14 @@ class _BackgroundPainter extends CustomPainter {
       final y = rng.nextDouble() * size.height * 0.82;
       final fs = 22.0 + rng.nextDouble() * 30.0;
       final angle = (rng.nextDouble() - 0.5) * pi / 6;
-      _txt(canvas, exprs[i], Offset(x, y), fs,
-          angle: angle,
-          alpha: _textAlpha * (0.75 + rng.nextDouble() * 0.40));
+      _txt(
+        canvas,
+        exprs[i],
+        Offset(x, y),
+        fs,
+        angle: angle,
+        alpha: _textAlpha * (0.75 + rng.nextDouble() * 0.40),
+      );
     }
 
     // Katman 2: Hint-Arap rakamları çeşitli boyutlarda — daha büyük & belirgin
@@ -168,8 +181,13 @@ class _BackgroundPainter extends CustomPainter {
       final x = rng.nextDouble() * size.width;
       final y = rng.nextDouble() * size.height;
       final fs = 36.0 + rng.nextDouble() * 88.0;
-      _txt(canvas, d, Offset(x, y), fs,
-          alpha: _textAlpha * (0.40 + rng.nextDouble() * 0.65));
+      _txt(
+        canvas,
+        d,
+        Offset(x, y),
+        fs,
+        alpha: _textAlpha * (0.40 + rng.nextDouble() * 0.65),
+      );
     }
 
     // Katman 3: Tablo/ızgara (hesap tabloları) — daha net çizgi kalınlığı
@@ -253,8 +271,11 @@ class _BackgroundPainter extends CustomPainter {
       final cy = size.height * (0.15 + rng.nextDouble() * 0.70);
       final base = 30.0 + rng.nextDouble() * 60.0;
       for (int ring = 1; ring <= 5; ring++) {
-        canvas.drawCircle(Offset(cx, cy), base * ring,
-            _sp(_strokeAlpha * (1.1 - ring * 0.12)));
+        canvas.drawCircle(
+          Offset(cx, cy),
+          base * ring,
+          _sp(_strokeAlpha * (1.1 - ring * 0.12)),
+        );
       }
       final a = rng.nextDouble() * 2 * pi;
       final pPos = Offset(cx + cos(a) * base * 2.5, cy + sin(a) * base * 2.5);
@@ -267,7 +288,10 @@ class _BackgroundPainter extends CustomPainter {
       final y = rng.nextDouble() * size.height;
       final r = 1.5 + rng.nextDouble() * 6.5;
       canvas.drawCircle(
-          Offset(x, y), r, _fp(_fillAlpha * (0.55 + rng.nextDouble())));
+        Offset(x, y),
+        r,
+        _fp(_fillAlpha * (0.55 + rng.nextDouble())),
+      );
     }
 
     // Katman 3: 5 köşeli yıldız şekilleri (daha büyük)
@@ -275,29 +299,70 @@ class _BackgroundPainter extends CustomPainter {
       final cx = rng.nextDouble() * size.width;
       final cy = rng.nextDouble() * size.height;
       final outerR = 16.0 + rng.nextDouble() * 46.0;
-      _drawStar(canvas, Offset(cx, cy), outerR, outerR * 0.40, 5,
-          _sp(_strokeAlpha * (0.80 + rng.nextDouble() * 0.45))
-            ..strokeWidth = 2.0);
+      _drawStar(
+        canvas,
+        Offset(cx, cy),
+        outerR,
+        outerR * 0.40,
+        5,
+        _sp(_strokeAlpha * (0.80 + rng.nextDouble() * 0.45))..strokeWidth = 2.0,
+      );
     }
 
     // Katman 4: Takımyıldız çizgileri
     final pts = List.generate(
-        18,
-        (_) =>
-            Offset(rng.nextDouble() * size.width, rng.nextDouble() * size.height));
+      18,
+      (_) =>
+          Offset(rng.nextDouble() * size.width, rng.nextDouble() * size.height),
+    );
     for (int i = 0; i < pts.length - 1; i += 2) {
-      canvas.drawLine(pts[i], pts[i + 1],
-          _sp(_strokeAlpha * 0.65)..strokeWidth = 1.2);
+      canvas.drawLine(
+        pts[i],
+        pts[i + 1],
+        _sp(_strokeAlpha * 0.65)..strokeWidth = 1.2,
+      );
     }
 
-    // Katman 5: Astronomi sembol metinleri (daha büyük)
-    final astro = ['☽', '☆', '✦', 'α', 'β', 'δ', 'γ', 'θ', '∠', '°', '☀', '♃'];
-    for (int i = 0; i < 18; i++) {
+    // Katman 5: Astronomi sembol metinleri (Yunan harfleri ve birimler)
+    final astro = ['α', 'β', 'δ', 'γ', 'θ', '∠', '°'];
+    for (int i = 0; i < 14; i++) {
       final x = rng.nextDouble() * size.width * 0.90;
       final y = rng.nextDouble() * size.height * 0.90;
-      _txt(canvas, astro[rng.nextInt(astro.length)], Offset(x, y),
-          20.0 + rng.nextDouble() * 46.0,
-          alpha: _textAlpha * (0.60 + rng.nextDouble() * 0.55));
+      _txt(
+        canvas,
+        astro[rng.nextInt(astro.length)],
+        Offset(x, y),
+        20.0 + rng.nextDouble() * 46.0,
+        alpha: _textAlpha * (0.60 + rng.nextDouble() * 0.55),
+      );
+    }
+
+    // Katman 6: Vektörel yıldız şekilleri (emoji yerine minimal vektör)
+    for (int i = 0; i < 14; i++) {
+      final cx = rng.nextDouble() * size.width * 0.92;
+      final cy = rng.nextDouble() * size.height * 0.92;
+      final outerR = 8.0 + rng.nextDouble() * 22.0;
+      _drawStar(
+        canvas,
+        Offset(cx, cy),
+        outerR,
+        outerR * 0.40,
+        5,
+        _sp(_strokeAlpha * (0.50 + rng.nextDouble() * 0.55))..strokeWidth = 1.5,
+      );
+    }
+
+    // Katman 7: Gezegen halkaları (vektörel)
+    for (int i = 0; i < 8; i++) {
+      final cx = rng.nextDouble() * size.width;
+      final cy = rng.nextDouble() * size.height;
+      final r = 5.0 + rng.nextDouble() * 14.0;
+      canvas.drawCircle(Offset(cx, cy), r, _fp(_fillAlpha * 1.3));
+      canvas.drawCircle(
+        Offset(cx, cy),
+        r * 1.7,
+        _sp(_strokeAlpha * 0.50)..strokeWidth = 0.8,
+      );
     }
   }
 
@@ -305,23 +370,47 @@ class _BackgroundPainter extends CustomPainter {
   // İBN-İ SİNA — Tıp, kitaplar, bitkiler, el yazmaları
   // ═══════════════════════════════════════════════════════════
   void _ibniSina(Canvas canvas, Size size, Random rng) {
-    // === HERO: Büyük tıp sembolü sol üst ===
-    _txt(canvas, '⚕', Offset(size.width * 0.02, size.height * 0.03),
-        size.width * 0.18,
-        alpha: _textAlpha * 1.1);
-    _txt(canvas, 'الشفاء', Offset(size.width * 0.55, size.height * 0.05),
-        size.width * 0.09,
-        alpha: _textAlpha * 1.0);
+    // === HERO: Büyük tıp sütunu/haç sol üst (vektör çizim) ===
+    _drawMedCross(
+      canvas,
+      Offset(size.width * 0.06, size.height * 0.06),
+      size.width * 0.09,
+      _fillAlpha * 1.1,
+    );
+    _txt(
+      canvas,
+      'الشفاء',
+      Offset(size.width * 0.55, size.height * 0.05),
+      size.width * 0.09,
+      alpha: _textAlpha * 1.0,
+    );
 
     // Katman 1: Tıp sembolü büyük metinler
-    final medSyms = ['⚕', '+', '✚'];
-    for (int i = 0; i < 16; i++) {
+    final medSyms = ['+', 'Rx'];
+    for (int i = 0; i < 12; i++) {
       final x = rng.nextDouble() * size.width * 0.85;
       final y = rng.nextDouble() * size.height * 0.85;
-      _txt(canvas, medSyms[rng.nextInt(medSyms.length)], Offset(x, y),
-          42.0 + rng.nextDouble() * 75.0,
-          angle: (rng.nextDouble() - 0.5) * pi / 8,
-          alpha: _textAlpha * (0.60 + rng.nextDouble() * 0.55));
+      _txt(
+        canvas,
+        medSyms[rng.nextInt(medSyms.length)],
+        Offset(x, y),
+        42.0 + rng.nextDouble() * 75.0,
+        angle: (rng.nextDouble() - 0.5) * pi / 8,
+        alpha: _textAlpha * (0.60 + rng.nextDouble() * 0.55),
+      );
+    }
+
+    // Vektörel tıp haçları (emoji yerine minimal vektör sembol)
+    for (int i = 0; i < 8; i++) {
+      final x = rng.nextDouble() * size.width * 0.80;
+      final y = rng.nextDouble() * size.height * 0.80;
+      final sz = 18.0 + rng.nextDouble() * 35.0;
+      _drawMedCross(
+        canvas,
+        Offset(x, y),
+        sz,
+        _fillAlpha * (0.8 + rng.nextDouble() * 0.5),
+      );
     }
 
     // Katman 2: Kitap şekilleri — daha kalın çizgiler
@@ -330,10 +419,12 @@ class _BackgroundPainter extends CustomPainter {
       final y = rng.nextDouble() * size.height * 0.75;
       final w = 52.0 + rng.nextDouble() * 65.0;
       final h = w * 1.35;
-      canvas.drawRect(Rect.fromLTWH(x, y, w, h),
-          _sp()..strokeWidth = 2.0);
-      canvas.drawLine(Offset(x + 10, y), Offset(x + 10, y + h),
-          _sp(_strokeAlpha * 0.75));
+      canvas.drawRect(Rect.fromLTWH(x, y, w, h), _sp()..strokeWidth = 2.0);
+      canvas.drawLine(
+        Offset(x + 10, y),
+        Offset(x + 10, y + h),
+        _sp(_strokeAlpha * 0.75),
+      );
       for (int ln = 1; ln <= 5; ln++) {
         canvas.drawLine(
           Offset(x + 17, y + h * 0.16 * ln),
@@ -347,8 +438,12 @@ class _BackgroundPainter extends CustomPainter {
     for (int i = 0; i < 14; i++) {
       final cx = rng.nextDouble() * size.width;
       final cy = rng.nextDouble() * size.height;
-      _drawLeaf(canvas, Offset(cx, cy), 20.0 + rng.nextDouble() * 45.0,
-          rng.nextDouble() * 2 * pi);
+      _drawLeaf(
+        canvas,
+        Offset(cx, cy),
+        20.0 + rng.nextDouble() * 45.0,
+        rng.nextDouble() * 2 * pi,
+      );
     }
 
     // Katman 4: Nabız / EKG çizgisi
@@ -359,14 +454,25 @@ class _BackgroundPainter extends CustomPainter {
     }
 
     // Katman 5: Arapça el yazması ifadeleri
-    final scripts = ['الطب', 'القانون', 'الشفاء', 'Ibn Sina', 'Avicenna', 'Canon'];
+    final scripts = [
+      'الطب',
+      'القانون',
+      'الشفاء',
+      'Ibn Sina',
+      'Avicenna',
+      'Canon',
+    ];
     for (int i = 0; i < 8; i++) {
       final x = rng.nextDouble() * size.width * 0.78;
       final y = rng.nextDouble() * size.height * 0.78;
-      _txt(canvas, scripts[rng.nextInt(scripts.length)], Offset(x, y),
-          18.0 + rng.nextDouble() * 30.0,
-          angle: (rng.nextDouble() - 0.5) * pi / 10,
-          alpha: _textAlpha * 0.85);
+      _txt(
+        canvas,
+        scripts[rng.nextInt(scripts.length)],
+        Offset(x, y),
+        18.0 + rng.nextDouble() * 30.0,
+        angle: (rng.nextDouble() - 0.5) * pi / 10,
+        alpha: _textAlpha * 0.85,
+      );
     }
   }
 
@@ -379,8 +485,12 @@ class _BackgroundPainter extends CustomPainter {
     final cy = size.height * 0.5;
     final maxR = size.shortestSide * 0.46;
     for (int lat = 1; lat <= 7; lat++) {
-      canvas.drawCircle(Offset(cx, cy), maxR * lat / 7,
-          _sp(_strokeAlpha * (0.45 + lat * 0.10))..strokeWidth = lat == 7 ? 2.2 : 1.5);
+      canvas.drawCircle(
+        Offset(cx, cy),
+        maxR * lat / 7,
+        _sp(_strokeAlpha * (0.45 + lat * 0.10))
+          ..strokeWidth = lat == 7 ? 2.2 : 1.5,
+      );
     }
     for (int lon = 0; lon < 10; lon++) {
       final a = lon * pi / 10;
@@ -397,18 +507,30 @@ class _BackgroundPainter extends CustomPainter {
       final y = rng.nextDouble() * size.height;
       final r = 1.2 + rng.nextDouble() * 7.0;
       canvas.drawCircle(
-          Offset(x, y), r, _fp(_fillAlpha * (0.50 + rng.nextDouble())));
+        Offset(x, y),
+        r,
+        _fp(_fillAlpha * (0.50 + rng.nextDouble())),
+      );
     }
 
     // Katman 3: Takımyıldız bağlantıları
-    final consPts = List.generate(20,
-        (_) => Offset(rng.nextDouble() * size.width, rng.nextDouble() * size.height));
+    final consPts = List.generate(
+      20,
+      (_) =>
+          Offset(rng.nextDouble() * size.width, rng.nextDouble() * size.height),
+    );
     for (int i = 0; i < consPts.length - 1; i += 3) {
-      canvas.drawLine(consPts[i], consPts[i + 1],
-          _sp(_strokeAlpha * 0.75)..strokeWidth = 1.2);
+      canvas.drawLine(
+        consPts[i],
+        consPts[i + 1],
+        _sp(_strokeAlpha * 0.75)..strokeWidth = 1.2,
+      );
       if (i + 2 < consPts.length) {
-        canvas.drawLine(consPts[i + 1], consPts[i + 2],
-            _sp(_strokeAlpha * 0.75)..strokeWidth = 1.2);
+        canvas.drawLine(
+          consPts[i + 1],
+          consPts[i + 2],
+          _sp(_strokeAlpha * 0.75)..strokeWidth = 1.2,
+        );
       }
     }
 
@@ -431,14 +553,66 @@ class _BackgroundPainter extends CustomPainter {
       }
     }
 
-    // Katman 5: Koordinat ve açı metinleri
-    final astroTxt = ['I', 'II', 'III', '0°', '30°', '60°', '90°', 'α', 'δ', 'RA', '☆', '✦'];
+    // Katman 5: Koordinat ve açı metinleri (emoji yerine metin semboller)
+    final astroTxt = [
+      'I',
+      'II',
+      'III',
+      '0°',
+      '30°',
+      '60°',
+      '90°',
+      'α',
+      'δ',
+      'RA',
+    ];
     for (int i = 0; i < 15; i++) {
       final x = rng.nextDouble() * size.width * 0.88;
       final y = rng.nextDouble() * size.height * 0.88;
-      _txt(canvas, astroTxt[rng.nextInt(astroTxt.length)], Offset(x, y),
-          14.0 + rng.nextDouble() * 26.0,
-          alpha: _textAlpha * (0.60 + rng.nextDouble() * 0.50));
+      _txt(
+        canvas,
+        astroTxt[rng.nextInt(astroTxt.length)],
+        Offset(x, y),
+        14.0 + rng.nextDouble() * 26.0,
+        alpha: _textAlpha * (0.60 + rng.nextDouble() * 0.50),
+      );
+    }
+
+    // Katman 6: Vektörel yıldız şekilleri (emoji yerine)
+    for (int i = 0; i < 12; i++) {
+      final cx = rng.nextDouble() * size.width * 0.90;
+      final cy = rng.nextDouble() * size.height * 0.90;
+      final outerR = 6.0 + rng.nextDouble() * 18.0;
+      _drawStar(
+        canvas,
+        Offset(cx, cy),
+        outerR,
+        outerR * 0.40,
+        rng.nextBool() ? 5 : 4,
+        _sp(_strokeAlpha * (0.55 + rng.nextDouble() * 0.50))..strokeWidth = 1.4,
+      );
+    }
+
+    // Katman 7: Gözlem nişangahları (teleskop artıları)
+    for (int i = 0; i < 5; i++) {
+      final cx = rng.nextDouble() * size.width;
+      final cy = rng.nextDouble() * size.height;
+      final r = 10.0 + rng.nextDouble() * 25.0;
+      canvas.drawCircle(
+        Offset(cx, cy),
+        r,
+        _sp(_strokeAlpha * 0.55)..strokeWidth = 1.0,
+      );
+      canvas.drawLine(
+        Offset(cx - r * 1.3, cy),
+        Offset(cx + r * 1.3, cy),
+        _sp(_strokeAlpha * 0.45)..strokeWidth = 0.8,
+      );
+      canvas.drawLine(
+        Offset(cx, cy - r * 1.3),
+        Offset(cx, cy + r * 1.3),
+        _sp(_strokeAlpha * 0.45)..strokeWidth = 0.8,
+      );
     }
   }
 
@@ -447,12 +621,20 @@ class _BackgroundPainter extends CustomPainter {
   // ═══════════════════════════════════════════════════════════
   void _cahitArf(Canvas canvas, Size size, Random rng) {
     // === HERO: Köşede büyük Arf invariant formülü ===
-    _txt(canvas, 'Arf(f)', Offset(size.width * 0.03, size.height * 0.03),
-        size.width * 0.11,
-        alpha: _textAlpha * 1.15);
-    _txt(canvas, '∈ {0,1}', Offset(size.width * 0.03, size.height * 0.13),
-        size.width * 0.08,
-        alpha: _textAlpha * 0.95);
+    _txt(
+      canvas,
+      'Arf(f)',
+      Offset(size.width * 0.03, size.height * 0.03),
+      size.width * 0.11,
+      alpha: _textAlpha * 1.15,
+    );
+    _txt(
+      canvas,
+      '∈ {0,1}',
+      Offset(size.width * 0.03, size.height * 0.13),
+      size.width * 0.08,
+      alpha: _textAlpha * 0.95,
+    );
 
     // Katman 1: Arf formülleri (daha büyük ve belirgin)
     final formulas = [
@@ -472,19 +654,45 @@ class _BackgroundPainter extends CustomPainter {
       final y = rng.nextDouble() * size.height * 0.82;
       final fs = 17.0 + rng.nextDouble() * 32.0;
       final angle = (rng.nextDouble() - 0.5) * pi / 4;
-      _txt(canvas, formulas[i], Offset(x, y), fs,
-          angle: angle,
-          alpha: _textAlpha * (0.70 + rng.nextDouble() * 0.45));
+      _txt(
+        canvas,
+        formulas[i],
+        Offset(x, y),
+        fs,
+        angle: angle,
+        alpha: _textAlpha * (0.70 + rng.nextDouble() * 0.45),
+      );
     }
 
     // Katman 2: Matematik sembolleri (daha fazla ve büyük)
-    final syms = ['∈', '∑', '∏', '⊕', '⊗', '∧', '∨', '≡', '≃', '∂', '∇', 'λ', 'φ', 'ψ', '∞', 'Δ'];
+    final syms = [
+      '∈',
+      '∑',
+      '∏',
+      '⊕',
+      '⊗',
+      '∧',
+      '∨',
+      '≡',
+      '≃',
+      '∂',
+      '∇',
+      'λ',
+      'φ',
+      'ψ',
+      '∞',
+      'Δ',
+    ];
     for (int i = 0; i < 28; i++) {
       final x = rng.nextDouble() * size.width;
       final y = rng.nextDouble() * size.height;
-      _txt(canvas, syms[rng.nextInt(syms.length)], Offset(x, y),
-          22.0 + rng.nextDouble() * 58.0,
-          alpha: _textAlpha * (0.45 + rng.nextDouble() * 0.65));
+      _txt(
+        canvas,
+        syms[rng.nextInt(syms.length)],
+        Offset(x, y),
+        22.0 + rng.nextDouble() * 58.0,
+        alpha: _textAlpha * (0.45 + rng.nextDouble() * 0.65),
+      );
     }
 
     // Katman 3: Topolojik eğriler (manifold hissi)
@@ -510,16 +718,22 @@ class _BackgroundPainter extends CustomPainter {
         y0,
       );
       canvas.drawPath(
-          path, _sp(_strokeAlpha * (0.90 + rng.nextDouble() * 0.45))..strokeWidth = 2.2);
+        path,
+        _sp(_strokeAlpha * (0.90 + rng.nextDouble() * 0.45))..strokeWidth = 2.2,
+      );
     }
 
     // Katman 4: İkili öğeler (Z/2Z bağlantısı)
     for (int i = 0; i < 22; i++) {
       final x = rng.nextDouble() * size.width;
       final y = rng.nextDouble() * size.height;
-      _txt(canvas, rng.nextBool() ? '0' : '1', Offset(x, y),
-          14.0 + rng.nextDouble() * 22.0,
-          alpha: _textAlpha * 0.52);
+      _txt(
+        canvas,
+        rng.nextBool() ? '0' : '1',
+        Offset(x, y),
+        14.0 + rng.nextDouble() * 22.0,
+        alpha: _textAlpha * 0.52,
+      );
     }
 
     // Katman 5: Halka şekilleri (cebirsel halkalar — daha büyük)
@@ -544,9 +758,25 @@ class _BackgroundPainter extends CustomPainter {
     }
   }
 
+  // ─────────── YARDIMCI: Tıp haçı çiz (emoji yerine vektör) ───────────
+  void _drawMedCross(Canvas canvas, Offset topLeft, double size, double alpha) {
+    final w = size / 3;
+    final path = Path()
+      ..addRect(Rect.fromLTWH(topLeft.dx + w, topLeft.dy, w, size))
+      ..addRect(Rect.fromLTWH(topLeft.dx, topLeft.dy + w, size, w));
+    canvas.drawPath(path, _fp(alpha));
+    canvas.drawPath(path, _sp(alpha * 0.8)..strokeWidth = 1.2);
+  }
+
   // ─────────── YARDIMCI: N köşeli yıldız çiz ───────────
-  void _drawStar(Canvas canvas, Offset center, double outerR, double innerR,
-      int points, Paint paint) {
+  void _drawStar(
+    Canvas canvas,
+    Offset center,
+    double outerR,
+    double innerR,
+    int points,
+    Paint paint,
+  ) {
     final path = Path();
     for (int i = 0; i < points * 2; i++) {
       final angle = i * pi / points - pi / 2;
@@ -574,7 +804,10 @@ class _BackgroundPainter extends CustomPainter {
       ..quadraticBezierTo(-sz * 0.72, -sz * 0.5, 0, -sz);
     canvas.drawPath(path, _fp(_fillAlpha * 1.5));
     canvas.drawLine(
-        Offset(0, -sz), Offset(0, 0), _sp(_strokeAlpha * 0.90)..strokeWidth = 1.2);
+      Offset(0, -sz),
+      Offset(0, 0),
+      _sp(_strokeAlpha * 0.90)..strokeWidth = 1.2,
+    );
     canvas.restore();
   }
 
@@ -629,7 +862,7 @@ class _OverlayPainter extends CustomPainter {
       _drawSmallStar(canvas, Offset(size.width - 20, size.height - 50), 8);
     } else if (name.contains('bn-i Sina') || name.contains('İbn')) {
       // Köşelere tıp/bitki süsleri
-      _cornerDecoration(canvas, size, '⚕', Offset(size.width - 40, 8));
+      _drawMedCrossOverlay(canvas, Offset(size.width - 36, 8), 14, _alpha);
     } else if (name.contains('Ulu')) {
       // Köşelere koordinat çizgileri
       canvas.drawLine(
@@ -647,6 +880,29 @@ class _OverlayPainter extends CustomPainter {
       canvas.drawCircle(Offset(size.width - 25, 25), 18, _sp(_alpha));
       canvas.drawCircle(Offset(25, size.height - 25), 12, _sp(_alpha * 0.7));
     }
+  }
+
+  void _drawMedCrossOverlay(
+    Canvas canvas,
+    Offset pos,
+    double size,
+    double alpha,
+  ) {
+    final paint = Paint()
+      ..color = primaryColor.withValues(alpha: alpha)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5;
+    final half = size / 2;
+    canvas.drawLine(
+      Offset(pos.dx + half, pos.dy),
+      Offset(pos.dx + half, pos.dy + size),
+      paint,
+    );
+    canvas.drawLine(
+      Offset(pos.dx, pos.dy + half),
+      Offset(pos.dx + size, pos.dy + half),
+      paint,
+    );
   }
 
   void _cornerDecoration(Canvas canvas, Size size, String text, Offset pos) {

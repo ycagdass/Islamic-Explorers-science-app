@@ -123,187 +123,365 @@ class SettingsScreen extends StatelessWidget {
         title: const Text('Ayarlar'),
         centerTitle: true,
       ),
-      body: Consumer<AppState>(
-        builder: (context, appState, child) {
-          return ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            children: [
-              // ── İÇERİK YÖNETİMİ ──────────────────────────────────────────
-              _sectionHeader('İÇERİK YÖNETİMİ'),
-              _groupedCard(
-                context,
-                isDark,
+      body: SafeArea(
+        top: false,
+        child: Consumer<AppState>(
+          builder: (context, appState, child) {
+            return ListView(
+              padding: EdgeInsets.fromLTRB(
+                16,
+                8,
+                16,
+                8 + MediaQuery.viewPaddingOf(context).bottom,
+              ),
+              children: [
+                // ── İÇERİK YÖNETİMİ ──────────────────────────────────────────
+                _sectionHeader('İÇERİK YÖNETİMİ'),
+                _groupedCard(
+                  context,
+                  isDark,
+                  children: [
+                    _settingsRow(
+                      context,
+                      icon: CupertinoIcons.paintbrush,
+                      iconBgColor: Colors.deepPurple,
+                      title: 'Tema Ayarı',
+                      subtitle: appState.isDarkMode ? 'Karanlık' : 'Açık',
+                      trailing: _chevron,
+                      onTap: () => Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (_) => const _ThemeSettingsPage(),
+                        ),
+                      ),
+                    ),
+                    _divider(isDark),
+                    _settingsRow(
+                      context,
+                      icon: CupertinoIcons.resize,
+                      iconBgColor: Colors.teal,
+                      title: 'Görünüm Ölçeği',
+                      trailing: _chevron,
+                      onTap: () => Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (_) => const _ScaleSettingsPage(),
+                        ),
+                      ),
+                    ),
+                    _divider(isDark),
+                    _settingsRow(
+                      context,
+                      icon: CupertinoIcons.photo,
+                      iconBgColor: Colors.orange,
+                      title: 'Görsel Yönetimi',
+                      subtitle: 'Bilim insanı fotoğrafları',
+                      trailing: _chevron,
+                      onTap: () => Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (_) => const _ImageManagementPage(),
+                        ),
+                      ),
+                    ),
+                    _divider(isDark),
+                    _settingsRow(
+                      context,
+                      icon: CupertinoIcons.music_note,
+                      iconBgColor: Colors.red,
+                      title: 'Ses Yönetimi',
+                      subtitle: 'Sesli anlatım dosyaları',
+                      trailing: _chevron,
+                      onTap: () => Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (_) => const _AudioManagementPage(),
+                        ),
+                      ),
+                    ),
+                    _divider(isDark),
+                    _settingsRow(
+                      context,
+                      icon: CupertinoIcons.doc_text,
+                      iconBgColor: Colors.blue,
+                      title: 'İçerik Düzenleme',
+                      subtitle: 'Hakkında ve eserler',
+                      trailing: _chevron,
+                      onTap: () => Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (_) => const _ContentManagementPage(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 24),
+
+                // ── HAKKINDA ─────────────────────────────────────────────────
+                _sectionHeader('HAKKINDA'),
+                _groupedCard(
+                  context,
+                  isDark,
+                  children: [
+                    _settingsRow(
+                      context,
+                      icon: CupertinoIcons.info_circle,
+                      iconBgColor: Colors.blueGrey,
+                      title: 'Uygulama Hakkında',
+                      trailing: _chevron,
+                      onTap: () => Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (_) => const _AboutPage(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 24),
+
+                // ── HESAP ─────────────────────────────────────────────────────
+                _sectionHeader('HESAP'),
+                _groupedCard(
+                  context,
+                  isDark,
+                  children: [
+                    _settingsRow(
+                      context,
+                      icon: CupertinoIcons.lock_open,
+                      iconBgColor: Colors.grey,
+                      title: 'Oturumu Kapat',
+                      trailing: _chevron,
+                      onTap: () async {
+                        final authService = AuthService();
+                        await authService.init();
+                        await authService.setRememberMe(false);
+                        if (context.mounted) Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 40),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// HAKKINDA SAYFASI (salt okunur)
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _AboutPage extends StatelessWidget {
+  const _AboutPage();
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bgColor = isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7);
+    final cardColor = isDark ? const Color(0xFF2C2C2E) : Colors.white;
+    final primary = Theme.of(context).colorScheme.primary;
+
+    return Scaffold(
+      backgroundColor: bgColor,
+      appBar: AppBar(
+        backgroundColor: bgColor,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        leading: IconButton(
+          icon: const Icon(CupertinoIcons.back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text('Uygulama Hakkında'),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        top: false,
+        child: ListView(
+          padding: EdgeInsets.fromLTRB(
+            16,
+            16,
+            16,
+            16 + MediaQuery.viewPaddingOf(context).bottom,
+          ),
+          children: [
+            // Logo / ikon alanı
+            Container(
+              decoration: BoxDecoration(
+                color: cardColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 16),
+              child: Column(
                 children: [
-                  _settingsRow(
-                    context,
-                    icon: CupertinoIcons.paintbrush,
-                    iconBgColor: Colors.deepPurple,
-                    title: 'Tema Ayarı',
-                    subtitle: appState.isDarkMode ? 'Karanlık' : 'Açık',
-                    trailing: _chevron,
-                    onTap: () => Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (_) => const _ThemeSettingsPage(),
+                  Container(
+                    width: 72,
+                    height: 72,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: RadialGradient(
+                        colors: [
+                          primary.withValues(alpha: 0.20),
+                          primary.withValues(alpha: 0.05),
+                        ],
+                      ),
+                      border: Border.all(
+                        color: primary.withValues(alpha: 0.45),
+                        width: 2.5,
                       ),
                     ),
-                  ),
-                  _divider(isDark),
-                  _settingsRow(
-                    context,
-                    icon: CupertinoIcons.resize,
-                    iconBgColor: Colors.teal,
-                    title: 'Görünüm Ölçeği',
-                    trailing: _chevron,
-                    onTap: () => Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (_) => const _ScaleSettingsPage(),
-                      ),
+                    child: Icon(
+                      Icons.science_outlined,
+                      size: 36,
+                      color: primary,
                     ),
                   ),
-                  _divider(isDark),
-                  _settingsRow(
-                    context,
-                    icon: CupertinoIcons.photo,
-                    iconBgColor: Colors.orange,
-                    title: 'Görsel Yönetimi',
-                    subtitle: 'Bilim insanı fotoğrafları',
-                    trailing: _chevron,
-                    onTap: () => Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (_) => const _ImageManagementPage(),
-                      ),
+                  const SizedBox(height: 14),
+                  Text(
+                    'Bilim İnsanları',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.white : Colors.black87,
                     ),
                   ),
-                  _divider(isDark),
-                  _settingsRow(
-                    context,
-                    icon: CupertinoIcons.music_note,
-                    iconBgColor: Colors.red,
-                    title: 'Ses Yönetimi',
-                    subtitle: 'Sesli anlatım dosyaları',
-                    trailing: _chevron,
-                    onTap: () => Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (_) => const _AudioManagementPage(),
-                      ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Sürüm 1.0.0',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey.shade500,
                     ),
                   ),
-                  _divider(isDark),
-                  _settingsRow(
-                    context,
-                    icon: CupertinoIcons.doc_text,
-                    iconBgColor: Colors.blue,
-                    title: 'İçerik Düzenleme',
-                    subtitle: 'Hakkında ve eserler',
-                    trailing: _chevron,
-                    onTap: () => Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (_) => const _ContentManagementPage(),
-                      ),
-                    ),
-                  ),
-                  _divider(isDark),
-                  _settingsRow(
-                    context,
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Detay bilgileri
+            Container(
+              decoration: BoxDecoration(
+                color: cardColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                children: [
+                  _aboutRow(
+                    isDark: isDark,
                     icon: CupertinoIcons.app_badge,
-                    iconBgColor: Colors.indigo,
-                    title: 'Uygulama Başlığı',
-                    subtitle: appState.appName,
-                    trailing: _chevron,
-                    onTap: () => Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (_) => const _AppNameSettingsPage(),
-                      ),
-                    ),
+                    iconColor: primary,
+                    label: 'Uygulama Adı',
+                    value: 'Bilim İnsanları',
                   ),
                   _divider(isDark),
-                  _settingsRow(
-                    context,
-                    icon: CupertinoIcons.app,
-                    iconBgColor: Colors.green,
-                    title: 'Karşılama Ekranı Logosu',
-                    subtitle: appState.appIconPath != null
-                        ? 'Özel logo seçildi'
-                        : 'Varsayılan logo',
-                    trailing: _chevron,
-                    onTap: () => Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (_) => const _AppIconSettingsPage(),
+                  _aboutRow(
+                    isDark: isDark,
+                    icon: CupertinoIcons.info_circle,
+                    iconColor: Colors.blue,
+                    label: 'Sürüm',
+                    value: '1.0.0 (Build 1)',
+                  ),
+                  _divider(isDark),
+                  _aboutRow(
+                    isDark: isDark,
+                    icon: CupertinoIcons.person_2_fill,
+                    iconColor: Colors.teal,
+                    label: 'Geliştirici',
+                    value: 'Scientists App Ekibi',
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Açıklama
+            Container(
+              decoration: BoxDecoration(
+                color: cardColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        CupertinoIcons.doc_text,
+                        size: 18,
+                        color: Colors.deepPurple,
                       ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Açıklama',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: isDark ? Colors.white : Colors.black87,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'İslam dünyasının yetiştirdiği büyük bilim insanlarını tanıtan eğitici mobil uygulama. '
+                    'Harezmi, Ali Kuşçu, İbn-i Sina, Uluğ Bey ve Cahit Arf\'ın hayatları, '
+                    'eserleri ve bilime katkıları sesli anlatım eşliğinde keşfedilebilir.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: isDark ? Colors.white70 : Colors.black54,
+                      height: 1.6,
                     ),
                   ),
                 ],
               ),
-
-              const SizedBox(height: 24),
-
-              // ── HAKKINDA ─────────────────────────────────────────────────
-              _sectionHeader('HAKKINDA'),
-              _groupedCard(
-                context,
-                isDark,
-                children: [
-                  _settingsRow(
-                    context,
-                    icon: CupertinoIcons.info_circle,
-                    iconBgColor: Colors.blueGrey,
-                    title: 'Uygulama Hakkında',
-                    trailing: _chevron,
-                    onTap: () => _showAboutDialog(context),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 24),
-
-              // ── HESAP ─────────────────────────────────────────────────────
-              _sectionHeader('HESAP'),
-              _groupedCard(
-                context,
-                isDark,
-                children: [
-                  _settingsRow(
-                    context,
-                    icon: CupertinoIcons.lock_open,
-                    iconBgColor: Colors.grey,
-                    title: 'Oturumu Kapat',
-                    trailing: _chevron,
-                    onTap: () async {
-                      final authService = AuthService();
-                      await authService.init();
-                      await authService.setRememberMe(false);
-                      if (context.mounted) Navigator.pop(context);
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 40),
-            ],
-          );
-        },
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  void _showAboutDialog(BuildContext context) {
-    showAboutDialog(
-      context: context,
-      applicationName: 'Bilim İnsanları',
-      applicationVersion: '1.0.0',
-      applicationIcon: const FlutterLogo(size: 64),
-      children: const [
-        Text(
-          'İslam dünyasının yetiştirdiği büyük bilim insanlarını tanıtan eğitici mobil uygulama.',
-          style: TextStyle(height: 1.6),
-        ),
-      ],
+  Widget _aboutRow({
+    required bool isDark,
+    required IconData icon,
+    required Color iconColor,
+    required String label,
+    required String value,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: iconColor),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 15,
+                color: isDark ? Colors.white70 : Colors.black54,
+              ),
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              color: isDark ? Colors.white : Colors.black87,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -333,55 +511,64 @@ class _ThemeSettingsPage extends StatelessWidget {
         title: const Text('Tema Ayarı'),
         centerTitle: true,
       ),
-      body: Consumer<AppState>(
-        builder: (context, appState, child) {
-          return ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF2C2C2E) : Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.indigo,
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                        child: const Icon(
-                          CupertinoIcons.moon_fill,
-                          color: Colors.white,
-                          size: 18,
-                        ),
-                      ),
-                      const SizedBox(width: 14),
-                      const Expanded(
-                        child: Text(
-                          'Karanlık Mod',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                      CupertinoSwitch(
-                        value: appState.isDarkMode,
-                        activeTrackColor: Theme.of(context).colorScheme.primary,
-                        onChanged: (_) => appState.toggleTheme(),
-                      ),
-                    ],
-                  ),
-                ),
+      body: SafeArea(
+        top: false,
+        child: Consumer<AppState>(
+          builder: (context, appState, child) {
+            return ListView(
+              padding: EdgeInsets.fromLTRB(
+                16,
+                16,
+                16,
+                16 + MediaQuery.viewPaddingOf(context).bottom,
               ),
-            ],
-          );
-        },
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: isDark ? const Color(0xFF2C2C2E) : Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: Colors.indigo,
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                          child: const Icon(
+                            CupertinoIcons.moon_fill,
+                            color: Colors.white,
+                            size: 18,
+                          ),
+                        ),
+                        const SizedBox(width: 14),
+                        const Expanded(
+                          child: Text(
+                            'Karanlık Mod',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                        CupertinoSwitch(
+                          value: appState.isDarkMode,
+                          activeTrackColor:
+                              Theme.of(context).colorScheme.primary,
+                          onChanged: (_) => appState.toggleTheme(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -435,105 +622,115 @@ class _ScaleSettingsPage extends StatelessWidget {
         title: const Text('Görünüm Ölçeği'),
         centerTitle: true,
       ),
-      body: Consumer<AppState>(
-        builder: (context, appState, child) {
-          return ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16, bottom: 8),
-                child: Text(
-                  'Tüm ekranlar seçilen ölçeğe göre yeniden hesaplanır.',
-                  style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
-                ),
+      body: SafeArea(
+        top: false,
+        child: Consumer<AppState>(
+          builder: (context, appState, child) {
+            return ListView(
+              padding: EdgeInsets.fromLTRB(
+                16,
+                16,
+                16,
+                16 + MediaQuery.viewPaddingOf(context).bottom,
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: cardColor,
-                  borderRadius: BorderRadius.circular(12),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, bottom: 8),
+                  child: Text(
+                    'Tüm ekranlar seçilen ölçeğe göre yeniden hesaplanır.',
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
+                  ),
                 ),
-                child: Column(
-                  children: options.asMap().entries.map((entry) {
-                    final i = entry.key;
-                    final mode = entry.value.$1;
-                    final label = entry.value.$2;
-                    final desc = entry.value.$3;
-                    final iconData = entry.value.$4;
-                    final selected = appState.scaleMode == mode;
+                Container(
+                  decoration: BoxDecoration(
+                    color: cardColor,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    children: options.asMap().entries.map((entry) {
+                      final i = entry.key;
+                      final mode = entry.value.$1;
+                      final label = entry.value.$2;
+                      final desc = entry.value.$3;
+                      final iconData = entry.value.$4;
+                      final selected = appState.scaleMode == mode;
 
-                    return Column(
-                      children: [
-                        if (i > 0) _divider(isDark),
-                        InkWell(
-                          onTap: () => appState.setScaleMode(mode),
-                          borderRadius: BorderRadius.circular(12),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 30,
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                    color: selected
-                                        ? Theme.of(context).colorScheme.primary
-                                        : Colors.teal,
-                                    borderRadius: BorderRadius.circular(7),
+                      return Column(
+                        children: [
+                          if (i > 0) _divider(isDark),
+                          InkWell(
+                            onTap: () => appState.setScaleMode(mode),
+                            borderRadius: BorderRadius.circular(12),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                      color: selected
+                                          ? Theme.of(
+                                              context,
+                                            ).colorScheme.primary
+                                          : Colors.teal,
+                                      borderRadius: BorderRadius.circular(7),
+                                    ),
+                                    child: Icon(
+                                      iconData,
+                                      color: Colors.white,
+                                      size: 16,
+                                    ),
                                   ),
-                                  child: Icon(
-                                    iconData,
-                                    color: Colors.white,
-                                    size: 16,
-                                  ),
-                                ),
-                                const SizedBox(width: 14),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        label,
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: selected
-                                              ? FontWeight.w600
-                                              : FontWeight.normal,
+                                  const SizedBox(width: 14),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          label,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: selected
+                                                ? FontWeight.w600
+                                                : FontWeight.normal,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        desc,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey.shade500,
+                                        Text(
+                                          desc,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey.shade500,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                if (selected)
-                                  Icon(
-                                    CupertinoIcons.checkmark_alt,
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.primary,
-                                    size: 20,
-                                  ),
-                              ],
+                                  if (selected)
+                                    Icon(
+                                      CupertinoIcons.checkmark_alt,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                      size: 20,
+                                    ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    );
-                  }).toList(),
+                        ],
+                      );
+                    }).toList(),
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -564,82 +761,90 @@ class _ImageManagementPage extends StatelessWidget {
         title: const Text('Görsel Yönetimi'),
         centerTitle: true,
       ),
-      body: Consumer<AppState>(
-        builder: (context, appState, child) {
-          return ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF2C2C2E) : Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  children: appState.scientists.asMap().entries.map((entry) {
-                    final index = entry.key;
-                    final scientist = entry.value;
-                    return Column(
-                      children: [
-                        if (index > 0) _divider(isDark),
-                        InkWell(
-                          onTap: () =>
-                              _pickAndCropImage(context, appState, scientist),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
-                            ),
-                            child: Row(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: SizedBox(
-                                    width: 44,
-                                    height: 44,
-                                    child: _buildImageWidget(
-                                      scientist.imagePath,
+      body: SafeArea(
+        top: false,
+        child: Consumer<AppState>(
+          builder: (context, appState, child) {
+            return ListView(
+              padding: EdgeInsets.fromLTRB(
+                16,
+                16,
+                16,
+                16 + MediaQuery.viewPaddingOf(context).bottom,
+              ),
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: isDark ? const Color(0xFF2C2C2E) : Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    children: appState.scientists.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final scientist = entry.value;
+                      return Column(
+                        children: [
+                          if (index > 0) _divider(isDark),
+                          InkWell(
+                            onTap: () =>
+                                _pickAndCropImage(context, appState, scientist),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
+                              ),
+                              child: Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: SizedBox(
+                                      width: 44,
+                                      height: 44,
+                                      child: _buildImageWidget(
+                                        scientist.imagePath,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(width: 14),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        scientist.name,
-                                        style: const TextStyle(fontSize: 16),
-                                      ),
-                                      Text(
-                                        'Görseli değiştir',
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.grey.shade500,
+                                  const SizedBox(width: 14),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          scientist.name,
+                                          style: const TextStyle(fontSize: 16),
                                         ),
-                                      ),
-                                    ],
+                                        Text(
+                                          'Görseli değiştir',
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            color: Colors.grey.shade500,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                const Icon(
-                                  CupertinoIcons.camera,
-                                  size: 20,
-                                  color: Colors.grey,
-                                ),
-                                const SizedBox(width: 4),
-                                _chevron,
-                              ],
+                                  const Icon(
+                                    CupertinoIcons.camera,
+                                    size: 20,
+                                    color: Colors.grey,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  _chevron,
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    );
-                  }).toList(),
+                        ],
+                      );
+                    }).toList(),
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -733,102 +938,110 @@ class _AudioManagementPage extends StatelessWidget {
         title: const Text('Ses Yönetimi'),
         centerTitle: true,
       ),
-      body: Consumer<AppState>(
-        builder: (context, appState, child) {
-          return ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF2C2C2E) : Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  children: appState.scientists.asMap().entries.map((entry) {
-                    final index = entry.key;
-                    final scientist = entry.value;
-                    final hasAudio =
-                        scientist.audioUrl != null &&
-                        scientist.audioUrl!.isNotEmpty;
+      body: SafeArea(
+        top: false,
+        child: Consumer<AppState>(
+          builder: (context, appState, child) {
+            return ListView(
+              padding: EdgeInsets.fromLTRB(
+                16,
+                16,
+                16,
+                16 + MediaQuery.viewPaddingOf(context).bottom,
+              ),
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: isDark ? const Color(0xFF2C2C2E) : Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    children: appState.scientists.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final scientist = entry.value;
+                      final hasAudio =
+                          scientist.audioUrl != null &&
+                          scientist.audioUrl!.isNotEmpty;
 
-                    return Column(
-                      children: [
-                        if (index > 0) _divider(isDark),
-                        InkWell(
-                          onTap: () =>
-                              _pickAudioFile(context, appState, scientist),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 30,
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                    color: hasAudio
-                                        ? Colors.green
-                                        : Colors.grey,
-                                    borderRadius: BorderRadius.circular(7),
-                                  ),
-                                  child: Icon(
-                                    hasAudio
-                                        ? CupertinoIcons.speaker_2_fill
-                                        : CupertinoIcons.speaker_slash,
-                                    color: Colors.white,
-                                    size: 16,
-                                  ),
-                                ),
-                                const SizedBox(width: 14),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        scientist.name,
-                                        style: const TextStyle(fontSize: 16),
-                                      ),
-                                      Text(
-                                        hasAudio
-                                            ? 'Ses dosyası mevcut'
-                                            : 'Ses dosyası ekle',
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.grey.shade500,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                if (hasAudio)
-                                  IconButton(
-                                    icon: const Icon(
-                                      CupertinoIcons.delete,
-                                      color: Colors.red,
-                                      size: 18,
+                      return Column(
+                        children: [
+                          if (index > 0) _divider(isDark),
+                          InkWell(
+                            onTap: () =>
+                                _pickAudioFile(context, appState, scientist),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                      color: hasAudio
+                                          ? Colors.green
+                                          : Colors.grey,
+                                      borderRadius: BorderRadius.circular(7),
                                     ),
-                                    onPressed: () =>
-                                        appState.updateScientistAudio(
-                                          scientist.id,
-                                          null,
-                                        ),
+                                    child: Icon(
+                                      hasAudio
+                                          ? CupertinoIcons.speaker_2_fill
+                                          : CupertinoIcons.speaker_slash,
+                                      color: Colors.white,
+                                      size: 16,
+                                    ),
                                   ),
-                                _chevron,
-                              ],
+                                  const SizedBox(width: 14),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          scientist.name,
+                                          style: const TextStyle(fontSize: 16),
+                                        ),
+                                        Text(
+                                          hasAudio
+                                              ? 'Ses dosyası mevcut'
+                                              : 'Ses dosyası ekle',
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            color: Colors.grey.shade500,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  if (hasAudio)
+                                    IconButton(
+                                      icon: const Icon(
+                                        CupertinoIcons.delete,
+                                        color: Colors.red,
+                                        size: 18,
+                                      ),
+                                      onPressed: () =>
+                                          appState.updateScientistAudio(
+                                            scientist.id,
+                                            null,
+                                          ),
+                                    ),
+                                  _chevron,
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    );
-                  }).toList(),
+                        ],
+                      );
+                    }).toList(),
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -872,71 +1085,79 @@ class _ContentManagementPage extends StatelessWidget {
         title: const Text('İçerik Düzenleme'),
         centerTitle: true,
       ),
-      body: Consumer<AppState>(
-        builder: (context, appState, child) {
-          return ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF2C2C2E) : Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  children: appState.scientists.asMap().entries.map((entry) {
-                    final index = entry.key;
-                    final scientist = entry.value;
-                    return Column(
-                      children: [
-                        if (index > 0) _divider(isDark),
-                        InkWell(
-                          onTap: () => Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (_) =>
-                                  _ScientistContentPage(scientist: scientist),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 30,
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.circular(7),
-                                  ),
-                                  child: const Icon(
-                                    CupertinoIcons.person,
-                                    color: Colors.white,
-                                    size: 18,
-                                  ),
-                                ),
-                                const SizedBox(width: 14),
-                                Expanded(
-                                  child: Text(
-                                    scientist.name,
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                ),
-                                _chevron,
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }).toList(),
-                ),
+      body: SafeArea(
+        top: false,
+        child: Consumer<AppState>(
+          builder: (context, appState, child) {
+            return ListView(
+              padding: EdgeInsets.fromLTRB(
+                16,
+                16,
+                16,
+                16 + MediaQuery.viewPaddingOf(context).bottom,
               ),
-            ],
-          );
-        },
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: isDark ? const Color(0xFF2C2C2E) : Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    children: appState.scientists.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final scientist = entry.value;
+                      return Column(
+                        children: [
+                          if (index > 0) _divider(isDark),
+                          InkWell(
+                            onTap: () => Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (_) =>
+                                    _ScientistContentPage(scientist: scientist),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      borderRadius: BorderRadius.circular(7),
+                                    ),
+                                    child: const Icon(
+                                      CupertinoIcons.person,
+                                      color: Colors.white,
+                                      size: 18,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 14),
+                                  Expanded(
+                                    child: Text(
+                                      scientist.name,
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                  _chevron,
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -988,165 +1209,174 @@ class _ScientistContentPageState extends State<_ScientistContentPage> {
         title: Text(widget.scientist.name),
         centerTitle: true,
       ),
-      body: Consumer<AppState>(
-        builder: (context, appState, child) {
-          final scientist = appState.scientists.firstWhere(
-            (s) => s.id == widget.scientist.id,
-            orElse: () => widget.scientist,
-          );
+      body: SafeArea(
+        top: false,
+        child: Consumer<AppState>(
+          builder: (context, appState, child) {
+            final scientist = appState.scientists.firstWhere(
+              (s) => s.id == widget.scientist.id,
+              orElse: () => widget.scientist,
+            );
 
-          return ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            children: [
-              // HAKKINDA
-              Padding(
-                padding: const EdgeInsets.only(left: 16, bottom: 6),
-                child: Text(
-                  'HAKKINDA',
-                  style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
-                ),
+            return ListView(
+              padding: EdgeInsets.fromLTRB(
+                16,
+                16,
+                16,
+                16 + MediaQuery.viewPaddingOf(context).bottom,
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: cardColor,
-                  borderRadius: BorderRadius.circular(12),
+              children: [
+                // HAKKINDA
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, bottom: 6),
+                  child: Text(
+                    'HAKKINDA',
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
+                  ),
                 ),
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextField(
-                      controller: _aboutController,
-                      maxLines: 5,
-                      maxLength: 2000,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
+                Container(
+                  decoration: BoxDecoration(
+                    color: cardColor,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextField(
+                        controller: _aboutController,
+                        maxLines: 5,
+                        maxLength: 2000,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          hintText: 'Hakkında bilgisini giriniz...',
                         ),
-                        hintText: 'Hakkında bilgisini giriniz...',
                       ),
-                    ),
-                    const SizedBox(height: 12),
-                    SizedBox(
-                      width: double.infinity,
-                      child: CupertinoButton.filled(
-                        onPressed: () {
-                          appState.updateScientistAbout(
-                            widget.scientist.id,
-                            _aboutController.text,
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Hakkında bilgisi kaydedildi'),
-                              duration: Duration(seconds: 1),
-                            ),
-                          );
-                        },
-                        child: const Text('Kaydet'),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: double.infinity,
+                        child: CupertinoButton.filled(
+                          onPressed: () {
+                            appState.updateScientistAbout(
+                              widget.scientist.id,
+                              _aboutController.text,
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Hakkında bilgisi kaydedildi'),
+                                duration: Duration(seconds: 1),
+                              ),
+                            );
+                          },
+                          child: const Text('Kaydet'),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 24),
+                const SizedBox(height: 24),
 
-              // ESERLERİ
-              Padding(
-                padding: const EdgeInsets.only(left: 16, bottom: 6),
-                child: Row(
-                  children: [
-                    Text(
-                      'ESERLERİ',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey.shade500,
+                // ESERLERİ
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, bottom: 6),
+                  child: Row(
+                    children: [
+                      Text(
+                        'ESERLERİ',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey.shade500,
+                        ),
                       ),
-                    ),
-                    const Spacer(),
-                    CupertinoButton(
-                      padding: EdgeInsets.zero,
-                      minimumSize: const Size(24, 24),
-                      onPressed: () => _showAddWorkDialog(context, appState),
-                      child: const Icon(CupertinoIcons.add_circled, size: 22),
-                    ),
-                  ],
+                      const Spacer(),
+                      CupertinoButton(
+                        padding: EdgeInsets.zero,
+                        minimumSize: const Size(24, 24),
+                        onPressed: () =>
+                            _showAddWorkDialog(context, appState),
+                        child: const Icon(CupertinoIcons.add_circled, size: 22),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: cardColor,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  children: [
-                    if (scientist.works.isEmpty)
-                      const Padding(
-                        padding: EdgeInsets.all(24),
-                        child: Text('Henüz eser eklenmemiş.'),
-                      )
-                    else
-                      ...scientist.works.asMap().entries.map((entry) {
-                        final i = entry.key;
-                        final work = entry.value;
-                        return Column(
-                          children: [
-                            if (i > 0) _divider(isDark),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 10,
+                Container(
+                  decoration: BoxDecoration(
+                    color: cardColor,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    children: [
+                      if (scientist.works.isEmpty)
+                        const Padding(
+                          padding: EdgeInsets.all(24),
+                          child: Text('Henüz eser eklenmemiş.'),
+                        )
+                      else
+                        ...scientist.works.asMap().entries.map((entry) {
+                          final i = entry.key;
+                          final work = entry.value;
+                          return Column(
+                            children: [
+                              if (i > 0) _divider(isDark),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 10,
+                                ),
+                                child: Row(
+                                  children: [
+                                    const Icon(CupertinoIcons.book, size: 18),
+                                    const SizedBox(width: 14),
+                                    Expanded(
+                                      child: Text(
+                                        work,
+                                        style: const TextStyle(fontSize: 16),
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(
+                                        CupertinoIcons.pencil,
+                                        size: 18,
+                                        color: Colors.blue,
+                                      ),
+                                      onPressed: () => _showEditWorkDialog(
+                                        context,
+                                        appState,
+                                        i,
+                                        work,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(
+                                        CupertinoIcons.delete,
+                                        size: 18,
+                                        color: Colors.red,
+                                      ),
+                                      onPressed: () {
+                                        final newWorks = List<String>.from(
+                                          scientist.works,
+                                        )..removeAt(i);
+                                        appState.updateScientistWorks(
+                                          widget.scientist.id,
+                                          newWorks,
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
                               ),
-                              child: Row(
-                                children: [
-                                  const Icon(CupertinoIcons.book, size: 18),
-                                  const SizedBox(width: 14),
-                                  Expanded(
-                                    child: Text(
-                                      work,
-                                      style: const TextStyle(fontSize: 16),
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(
-                                      CupertinoIcons.pencil,
-                                      size: 18,
-                                      color: Colors.blue,
-                                    ),
-                                    onPressed: () => _showEditWorkDialog(
-                                      context,
-                                      appState,
-                                      i,
-                                      work,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(
-                                      CupertinoIcons.delete,
-                                      size: 18,
-                                      color: Colors.red,
-                                    ),
-                                    onPressed: () {
-                                      final newWorks = List<String>.from(
-                                        scientist.works,
-                                      )..removeAt(i);
-                                      appState.updateScientistWorks(
-                                        widget.scientist.id,
-                                        newWorks,
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        );
-                      }),
-                  ],
+                            ],
+                          );
+                        }),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -1232,374 +1462,5 @@ class _ScientistContentPageState extends State<_ScientistContentPage> {
         ],
       ),
     );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// UYGULAMA ADI AYARLARI
-// ─────────────────────────────────────────────────────────────────────────────
-
-class _AppNameSettingsPage extends StatefulWidget {
-  const _AppNameSettingsPage();
-
-  @override
-  State<_AppNameSettingsPage> createState() => _AppNameSettingsPageState();
-}
-
-class _AppNameSettingsPageState extends State<_AppNameSettingsPage> {
-  late TextEditingController _nameController;
-
-  @override
-  void initState() {
-    super.initState();
-    final appState = context.read<AppState>();
-    _nameController = TextEditingController(text: appState.appName);
-  }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bgColor = isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7);
-    final cardColor = isDark ? const Color(0xFF2C2C2E) : Colors.white;
-
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        backgroundColor: bgColor,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        leading: IconButton(
-          icon: const Icon(CupertinoIcons.back),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text('Uygulama Başlığı'),
-        centerTitle: true,
-      ),
-      body: Consumer<AppState>(
-        builder: (context, appState, child) {
-          return ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16, bottom: 8),
-                child: Text(
-                  'Uygulama başlığı; ana sayfa üst çubuğunda ve karşılama ekranında gösterilir.',
-                  style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: cardColor,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextField(
-                      controller: _nameController,
-                      maxLength: 50,
-                      decoration: InputDecoration(
-                        labelText: 'Başlık',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        hintText: 'Bilim İnsanları',
-                        prefixIcon: const Icon(Icons.title),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    SizedBox(
-                      width: double.infinity,
-                      child: CupertinoButton.filled(
-                        onPressed: () async {
-                          await appState.setAppName(
-                            _nameController.text.trim(),
-                          );
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Uygulama adı kaydedildi'),
-                                duration: Duration(seconds: 1),
-                              ),
-                            );
-                            Navigator.pop(context);
-                          }
-                        },
-                        child: const Text('Kaydet'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// UYGULAMA İKONU AYARLARI
-// ─────────────────────────────────────────────────────────────────────────────
-
-class _AppIconSettingsPage extends StatelessWidget {
-  const _AppIconSettingsPage();
-
-  @override
-  Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bgColor = isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7);
-    final cardColor = isDark ? const Color(0xFF2C2C2E) : Colors.white;
-    final primary = Theme.of(context).colorScheme.primary;
-
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        backgroundColor: bgColor,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        leading: IconButton(
-          icon: const Icon(CupertinoIcons.back),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text('Karşılama Ekranı Logosu'),
-        centerTitle: true,
-      ),
-      body: Consumer<AppState>(
-        builder: (context, appState, child) {
-          return ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            children: [
-              // Mevcut ikon önizleme
-              Container(
-                decoration: BoxDecoration(
-                  color: cardColor,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  children: [
-                    // Ikon önizlemesi
-                    Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: primary, width: 2.5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: primary.withValues(alpha: 0.25),
-                            blurRadius: 16,
-                            spreadRadius: 2,
-                          ),
-                        ],
-                      ),
-                      child: ClipOval(
-                        child: appState.appIconPath != null
-                            ? Image.file(
-                                File(appState.appIconPath!),
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    Icon(
-                                      Icons.science_outlined,
-                                      size: 48,
-                                      color: primary,
-                                    ),
-                              )
-                            : Icon(
-                                Icons.science_outlined,
-                                size: 48,
-                                color: primary,
-                              ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      appState.appIconPath != null
-                          ? 'Özel ikon seçildi'
-                          : 'Varsayılan ikon kullanılıyor',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey.shade500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // İkon seçme/silme butonları
-              Container(
-                decoration: BoxDecoration(
-                  color: cardColor,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  children: [
-                    InkWell(
-                      onTap: () => _pickAndCropIcon(context, appState),
-                      borderRadius: BorderRadius.circular(12),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 14,
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 30,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(7),
-                              ),
-                              child: const Icon(
-                                CupertinoIcons.photo_on_rectangle,
-                                color: Colors.white,
-                                size: 16,
-                              ),
-                            ),
-                            const SizedBox(width: 14),
-                            const Expanded(
-                              child: Text(
-                                'Galeriden Seç',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ),
-                            _chevron,
-                          ],
-                        ),
-                      ),
-                    ),
-                    if (appState.appIconPath != null) ...[
-                      _divider(isDark),
-                      InkWell(
-                        onTap: () async {
-                          await appState.setAppIconPath(null);
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Varsayılan ikona geri dönüldü'),
-                                duration: Duration(seconds: 1),
-                              ),
-                            );
-                          }
-                        },
-                        borderRadius: BorderRadius.circular(12),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 14,
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 30,
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(7),
-                                ),
-                                child: const Icon(
-                                  CupertinoIcons.delete,
-                                  color: Colors.white,
-                                  size: 16,
-                                ),
-                              ),
-                              const SizedBox(width: 14),
-                              const Expanded(
-                                child: Text(
-                                  'Varsayılana Döndür',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  'Galeriden seçtiğin görsel karşılama ekranında logo olarak görünür.\n\nNot: Telefon uygulama listesindeki (launcher) simge build sırasında belirlenir; uygulama içinden değiştirilemez.',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey.shade500,
-                    height: 1.5,
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-
-  Future<void> _pickAndCropIcon(BuildContext context, AppState appState) async {
-    final primaryColor = Theme.of(context).colorScheme.primary;
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile == null) return;
-
-    try {
-      final croppedFile = await ImageCropper().cropImage(
-        sourcePath: pickedFile.path,
-        uiSettings: [
-          AndroidUiSettings(
-            toolbarTitle: 'Uygulama İkonu Düzenle',
-            toolbarColor: primaryColor,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.square,
-            lockAspectRatio: true,
-            aspectRatioPresets: [CropAspectRatioPreset.square],
-          ),
-          IOSUiSettings(
-            title: 'Uygulama İkonu Düzenle',
-            aspectRatioPresets: [CropAspectRatioPreset.square],
-            aspectRatioLockEnabled: true,
-          ),
-        ],
-      );
-
-      if (croppedFile != null) {
-        await appState.setAppIconPath(croppedFile.path);
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Uygulama ikonu güncellendi'),
-              duration: Duration(seconds: 1),
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      debugPrint('Icon crop failed: $e');
-      await appState.setAppIconPath(pickedFile.path);
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('İkon güncellendi (kırpma atlandı)'),
-            duration: Duration(seconds: 1),
-          ),
-        );
-      }
-    }
   }
 }

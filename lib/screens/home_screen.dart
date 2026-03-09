@@ -15,15 +15,14 @@ class HomeScreen extends StatelessWidget {
     final appState   = context.watch<AppState>();
     final scientists = appState.scientists;
     final scaleMode  = appState.scaleMode;
-    final appName    = appState.appName;
 
     if (scientists.isEmpty) return const Scaffold(body: SizedBox());
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          appName,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+        title: const Text(
+          'Bilim İnsanları',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         actions: [

@@ -1,256 +1,166 @@
-Mevcut Flutter projesinde aşağıdaki sorunları düzeltmeni ve yeni özellikleri eklemeni istiyorum. Tüm değişiklikler çalışır, derlenebilir ve responsive şekilde uygulanmalı.
+Mevcut Flutter projesi büyük ölçüde tamamlandı ve çalışıyor. Projeyi baştan yazma. Sadece aşağıdaki değişiklikleri yap. Mevcut çalışan sistemi bozma.
 
-Mevcut Flutter projesinde aşağıdaki değişiklikleri uygula. Tüm kod çalışır, derlenebilir ve responsive olacak şekilde düzenlenmeli.
+GENEL KURAL
+- Sadece gerekli yerleri değiştir.
+- Mevcut çalışan özellikleri koru.
+- Kod derlenebilir, çalışabilir ve temiz kalsın.
+- Material 3 uyumlu, modern ve responsive yapı korunmalı.
+- Gerekirse internetten yardım alabilirsin.
 
-GENEL KURALLAR
+ÖNEMLİ: KORUNMASI GEREKEN ÖZELLİKLER
+Aşağıdaki özellikler kesinlikle korunmalı, kaldırılmamalı ve bozulmamalı:
 
-- Uygulama hem telefon hem tablet ekranlarında düzgün çalışmalı.
-- Özellikle 7–12 inç tabletler için optimize edilmiş responsive düzen olmalı.
-- UI Material 3 uyumlu modern ve temiz olmalı.
-- Layout taşmaları, üst üste binmeler ve görünmeyen butonlar tamamen düzeltilmeli.
-- Kod modüler ve okunabilir olmalı.
+- bilim insanı ses dosyası ekleme sistemi
+- ses oynatma sistemi
+- ayarlardan ses dosyası değiştirme
+- bilim insanı sayfasında otomatik ses oynatma
+- tema ayarı (Light / Dark)
+- içerik yönetimi sistemi
+- ayarlara parola ile giriş (şifre: 1881)
+- karşılama ekranı (sadece ilk açılışta gösterilen onboarding)
+- bilim insanı fotoğraf değiştirme sistemi
+- bilim insanı hakkında metni düzenleme sistemi
+- bilim insanı eserleri düzenleme sistemi
 
-1) ANA SAYFA RESPONSIVE SORUNLARINI DÜZELT
+Do not refactor the audio system unless necessary.
 
-Ana ekranda bilim insanı kartlarının boyutları bazı tabletlerde çok büyük kalıyor.
+1) SADECE ŞU ÖZELLİKLERİ KALDIR
+Aşağıdaki iki özelliği projeden tamamen kaldır:
 
-Bunu şu şekilde çöz:
+- uygulama ikonunu değiştirme
+- uygulama adını değiştirme
 
-- Kart boyutları ekran genişliğine göre otomatik hesaplanmalı.
-- Kartlar responsive olmalı.
-- Scroll varsayılan çözüm olmamalı.
-- Kartların mümkün olduğunca ilk ekranda görünmesi sağlanmalı.
+Yapılması gerekenler:
+- Ayarlar / İçerik Yönetimi içindeki bu iki menüyü kaldır.
+- Bu iki özellikle ilgili ekranları kaldır.
+- Bu iki özellikle ilgili gereksiz widget, service, helper ve provider kodlarını temizle.
+- Kullanılmayan importları kaldır.
+- Kullanılmayan paketleri pubspec.yaml dosyasından kaldır.
+- Mevcut yüklü gelen uygulama adı ve uygulama ikonu aynen kalsın.
 
-Bilim insanı kartları:
+2) AYARLAR MENÜSÜNÜ GÜNCELLE
+Ayarlar ekranı sade ve düzenli kalsın.
 
-- Yuvarlak tasarım kullan.
-- Kart boyutu ekran boyutuna göre hesaplanmalı.
-- Spacing dengeli olmalı.
-
-Gerekirse şu yapıları kullan:
-
-- LayoutBuilder
-- MediaQuery
-- Flexible
-- Expanded
-- Wrap
-- Breakpoint sistemi
-
-2) HOME BAR / SİSTEM BAR ÇAKIŞMASINI DÜZELT
-
-Uygulamanın üst kısmı sistem bar ile çakışıyor.
-
-Bunu çözmek için:
-
-- SafeArea kullan
-- Sistem inset'lerini dikkate al
-- Status bar veya notch ile çakışma olmasın
-
-3) DETAY SAYFASI RESPONSIVE OLSUN
-
-Bilim insanı detay sayfasında ses butonu bazı cihazlarda görünmüyor.
-
-Bunu düzelt:
-
-- Ses butonu her zaman görünür olmalı.
-- Overflow hataları olmamalı.
-
-Responsive yapı:
-
-Telefonlarda:
-
-- dikey layout
-
-Tabletlerde:
-
-- iki kolonlu layout
-
-Sol taraf:
-
-- bilim insanı fotoğrafı
-- isim
-- kısa bilgi
-
-Sağ taraf:
-
-- hakkında
-- eserleri
-- ses oynatıcı
-
-4) BİLİM İNSANLARININ KATKILARI GÖRSEL OLARAK EKLENSİN
-
-Her bilim insanının sayfasında tematik arka plan görselleri olsun.
-
-Örnekler:
-
-Harezmi  
-- rakamlar  
-- cebir sembolleri  
-
-Ali Kuşçu  
-- yıldızlar  
-- teleskop  
-- astronomi sembolleri  
-
-İbn-i Sina  
-- tıp kitapları  
-- şifa sembolleri  
-
-Uluğ Bey  
-- yıldız haritaları  
-
-Cahit Arf  
-- matematik formülleri  
-
-Bu görseller:
-
-- düşük opaklıkta olsun
-- dekoratif arka plan gibi görünsün
-- metni kapatmasın
-- modern ve estetik olsun
-
-5) AYARLAR PAROLA KORUMASI
-
-Ayarlar ekranına giriş parola ile korunsun.
-
-Şifre:
-
-1881
-
-Kurallar:
-
-- doğru parola girilmeden ayarlar açılmasın
-- parola doğrulama sistemi devam etsin
-- gerekirse sqflite kullanılabilir
-
-6) AYARLAR MENÜ YAPISI
-
-Ayarlar ekranında şu bölümler olsun:
+Ayarlar içinde şu yapı olsun:
 
 - İçerik Yönetimi
 - Hakkında
 
-7) İÇERİK YÖNETİMİ
-
-Bu bölümde uygulamadaki tüm içerikler düzenlenebilir.
-
-Burada şu ayarlar bulunmalı:
-
+İçerik Yönetimi içinde şunlar kalmalı:
 - tema ayarı (Light / Dark)
 - bilim insanlarının fotoğraflarını değiştirme
 - bilim insanlarının ses dosyalarını değiştirme
-- bilim insanlarının hakkında metnini düzenleme
+- bilim insanlarının hakkında metinlerini düzenleme
 - bilim insanlarının eserlerini düzenleme
-- uygulama ikonunu değiştirme
-- uygulama adını değiştirme
 
-8) UYGULAMA İKONUNU DEĞİŞTİRME
+Hakkında sayfasında şunlar olsun:
+- uygulama adı
+- sürüm bilgisi
+- geliştiriciler
+- kısa açıklama
 
-İçerik yönetimi bölümünde:
+Hakkında sayfası sadece okunabilir olsun.
 
-"Uygulama İkonu" ayarı ekle.
+3) UI / UX İYİLEŞTİRMESİ YAP
+Mevcut tasarım dilini bozma ama görünümü iyileştir.
 
-Kullanıcı:
-
-- galeriden bir resim seçebilsin
-- resmi düzenleyebilsin
-
-Düzenleme özellikleri:
-
-- crop
-- zoom
-- ölçeklendirme
-- oran ayarı
-
-Bunun için şu paketler kullanılabilir:
-
-image_picker  
-image_cropper
-
-Seçilen görsel uygulama ikonu olarak kullanılmalı.
-
-9) UYGULAMA ADINI DEĞİŞTİRME
-
-İçerik yönetimi içinde:
-
-"Uygulama Adı" ayarı ekle.
-
-Kullanıcı:
-
-- uygulama adını değiştirebilsin
-- değişiklik kalıcı saklansın
-
-Bu isim:
-
-- ana sayfada
-- karşılama ekranında
-- gerekli yerlerde gösterilsin.
-
-10) KARŞILAMA EKRANI (ONBOARDING)
-
-Uygulamaya bir karşılama ekranı ekle.
-
-Kurallar:
-
-- sadece uygulama ilk kez açıldığında gösterilsin
-- sonraki açılışlarda görünmesin
-- shared_preferences ile ilk açılış durumu saklanabilir
-
-Navigation:
-
-İlk açılış:
-
-Karşılama ekranı  
-→ Ana Sayfa
-
-Sonraki açılışlar:
-
-Direkt  
-→ Ana Sayfa
-
-Karşılama ekranı:
-
-- modern
-- minimal
-- Material 3 uyumlu
-- merkezde uygulama logosu
-- kısa karşılama metni
-- responsive tasarım
-
-11) PERFORMANS OPTİMİZASYONU
-
-Uygulama hızlı çalışmalı.
-
-Şunları uygula:
-
-- gereksiz rebuild'leri azalt
-- ağır widget kullanma
-- görselleri optimize et
-- stateless widget kullanımı artır
-- UI kodlarını ayrı widgetlara böl
-- responsive hesaplamaları optimize et
+Şunları düzenle:
+- ana sayfa kart boyutları
+- spacing
+- padding
+- font boyutları
+- hizalama
+- buton yerleşimi
 
 Amaç:
+- telefon ve tablette daha dengeli görünüm
+- kartların üst üste binmemesi
+- boşlukların düzgün olması
+- ekranın daha profesyonel görünmesi
 
-- hızlı açılan
-- akıcı çalışan
-- stabil bir uygulama.
+4) HOME BAR / SİSTEM BAR ÇAKIŞMASINI DÜZELT
+Uygulamada bazı yerlerde sistem alanlarıyla çakışma olabiliyor.
 
-12) ÇIKTI
+Bunu tamamen düzelt:
+- SafeArea doğru kullanılsın
+- üst status bar ile çakışma olmasın
+- alt navigation / home bar ile çakışma olmasın
+- geri tuşu, alt sistem alanı ve UI elemanları birbirinin üstüne gelmesin
+- telefon ve tabletlerde tüm sayfalar güvenli alan içinde kalsın
 
-Eksiksiz şekilde ver:
+5) RESPONSIVE YAPIYI KORU VE İYİLEŞTİR
+Uygulama şu cihazlarda düzgün çalışmalı:
+- telefon
+- küçük tablet
+- büyük tablet
 
-- güncellenmiş pubspec.yaml
-- main.dart
-- tüm değişen dart dosyaları
-- yeni widget dosyaları
-- responsive helper sınıfları
-- navigation güncellemeleri
-- içerik yönetimi ekranı
-- ikon değiştirme sistemi
-- uygulama adı değiştirme sistemi
-- karşılama ekranı
+Şunlar ekran boyutuna göre dengelensin:
+- kart boyutları
+- spacing
+- padding
+- text size
+- icon size
+- image size
 
-Kod eksik bırakılmamalı.
+Overflow, clipping ve görünmeyen buton sorunları tamamen giderilsin.
 
-Uygulama derlenebilir ve çalışabilir durumda olmalı.
+6) BİLİM İNSANI DETAY SAYFALARINI GÖRSEL OLARAK İYİLEŞTİR
+Detay sayfalarında kullanılan arka plan sembolleri daha estetik olsun.
+
+Kurallar:
+- emoji kullanma
+- modern, minimal, vektör benzeri dekoratif semboller kullan
+- düşük opaklıkla arka planda yer alsın
+- metni kapatmasın
+- responsive olsun
+- profesyonel görünsün
+
+Örnek temalar:
+- Harezmi → matematik sembolleri
+- Ali Kuşçu → astronomi sembolleri
+- İbn-i Sina → tıp / el yazması / şifa temaları
+- Uluğ Bey → yıldız haritası / gözlem teması
+- Cahit Arf → matematik formülleri / cebirsel yapılar
+
+7) PERFORMANS OPTİMİZASYONU YAP
+Uygulamayı optimize et ama çalışan yapıyı bozma.
+
+Şunları yap:
+- gereksiz rebuild’leri azalt
+- mümkün olan yerlerde StatelessWidget kullan
+- tekrar eden UI parçalarını ayrı widgetlara böl
+- gereksiz state kullanımını azalt
+- kullanılmayan kodları temizle
+- kullanılmayan importları kaldır
+- gereksiz paketleri kaldır
+- navigation akışını sadeleştir ama bozma
+- görsel yükleme ve layout hesaplamalarını optimize et
+
+Amaç:
+- uygulama daha hızlı açılsın
+- daha akıcı çalışsın
+- daha az bellek kullansın
+
+8) MEVCUT ÖZELLİKLERİ BOZMA
+Tekrar hatırlatma:
+Aşağıdaki sistemlere dokunma, sadece gerektiği kadar koru:
+
+- ses sistemi
+- tema sistemi
+- parola koruması
+- onboarding / karşılama ekranı
+- içerik yönetimi
+- bilim insanı içerikleri
+- fotoğraf ve ses seçme alanları
+
+Sadece uygulama adı değiştirme ve uygulama ikonu değiştirme özelliklerini kaldır.
+
+9) ÇIKTI
+Aşağıdakileri ver:
+- değiştirilen dart dosyaları
+- kaldırılan kodların kısa özeti
+- yapılan UI iyileştirmeleri
+- yapılan performans optimizasyonları
+- gerekiyorsa güncellenmiş pubspec.yaml
+
+Kod eksiksiz, derlenebilir ve çalışır durumda olmalı.
