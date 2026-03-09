@@ -29,9 +29,7 @@ class _DetailScreenState extends State<DetailScreen>
     if (widget.scientist.audioUrl != null &&
         widget.scientist.audioUrl!.isNotEmpty) {
       _audioService.initAudio(widget.scientist.audioUrl!).then((_) {
-        Future.delayed(const Duration(milliseconds: 500), () {
-          if (mounted) _audioService.play();
-        });
+        if (mounted) _audioService.play();
       });
     }
   }
@@ -74,7 +72,7 @@ class _DetailScreenState extends State<DetailScreen>
           scientistName: widget.scientist.name,
           child: LayoutBuilder(
             builder: (context, constraints) {
-              final scale   = ResponsiveHelper.compute(context, scaleMode);
+              final scale = ResponsiveHelper.compute(context, scaleMode);
               final isPhone = scale.screenType == ScreenType.phone;
 
               if (isPhone) {
@@ -106,7 +104,8 @@ class _DetailScreenState extends State<DetailScreen>
                     children: [
                       // Sol kolon
                       SizedBox(
-                        width: constraints.maxWidth * scale.detailLeftWidthRatio,
+                        width:
+                            constraints.maxWidth * scale.detailLeftWidthRatio,
                         child: SingleChildScrollView(
                           child: _buildPhotoSection(scale: scale),
                         ),
@@ -152,7 +151,7 @@ class _DetailScreenState extends State<DetailScreen>
   // ── Fotoğraf + isim + unvan bölümü ─────────────────────────────────────────
   Widget _buildPhotoSection({required AppScale scale}) {
     final imageSize = scale.detailImageSize;
-    final primary   = Theme.of(context).colorScheme.primary;
+    final primary = Theme.of(context).colorScheme.primary;
 
     return Column(
       children: [
@@ -280,10 +279,9 @@ class _DetailScreenState extends State<DetailScreen>
                     Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .primary
-                            .withValues(alpha: 0.1),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(alpha: 0.1),
                       ),
                       child: IconButton(
                         icon: Icon(
@@ -309,17 +307,14 @@ class _DetailScreenState extends State<DetailScreen>
             StreamBuilder<Duration>(
               stream: _audioService.player.positionStream,
               builder: (context, snapshot) {
-                final duration =
-                    _audioService.player.duration ?? Duration.zero;
+                final duration = _audioService.player.duration ?? Duration.zero;
                 final position = snapshot.data ?? Duration.zero;
                 return SliderTheme(
                   data: SliderTheme.of(context).copyWith(
-                    activeTrackColor:
-                        Theme.of(context).colorScheme.primary,
-                    inactiveTrackColor: Theme.of(context)
-                        .colorScheme
-                        .primary
-                        .withValues(alpha: 0.2),
+                    activeTrackColor: Theme.of(context).colorScheme.primary,
+                    inactiveTrackColor: Theme.of(
+                      context,
+                    ).colorScheme.primary.withValues(alpha: 0.2),
                     thumbColor: Theme.of(context).colorScheme.primary,
                     trackHeight: 4.0,
                     thumbShape: const RoundSliderThumbShape(
@@ -328,11 +323,11 @@ class _DetailScreenState extends State<DetailScreen>
                   ),
                   child: Slider(
                     value: position.inMilliseconds.toDouble().clamp(
-                          0.0,
-                          duration.inMilliseconds.toDouble() > 0
-                              ? duration.inMilliseconds.toDouble()
-                              : 0.0,
-                        ),
+                      0.0,
+                      duration.inMilliseconds.toDouble() > 0
+                          ? duration.inMilliseconds.toDouble()
+                          : 0.0,
+                    ),
                     max: duration.inMilliseconds.toDouble() > 0
                         ? duration.inMilliseconds.toDouble()
                         : 1.0,

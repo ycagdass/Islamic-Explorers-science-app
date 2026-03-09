@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:audio_session/audio_session.dart';
 
 class AudioService {
   final AudioPlayer _player = AudioPlayer();
@@ -8,7 +9,16 @@ class AudioService {
 
   Future<void> initAudio(String url) async {
     try {
-      await _player.setUrl(url);
+      // Android'de ses odağını düzgün yönetmek için audio session yapılandır
+      final session = await AudioSession.instance;
+      await session.configure(const AudioSessionConfiguration.speech());
+
+      // Yerel dosya yolu mu yoksa ağ URL'si mi kontrol et
+      if (url.startsWith('http://') || url.startsWith('https://')) {
+        await _player.setUrl(url);
+      } else {
+        await _player.setFilePath(url);
+      }
     } catch (e) {
       debugPrint("Error loading audio: $e");
     }
