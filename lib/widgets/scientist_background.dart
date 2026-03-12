@@ -34,15 +34,34 @@ class ScientistBackground extends StatelessWidget {
             ),
           ),
         ),
-        // Katman 2: Tematik arka plan çizimleri (CustomPaint)
+        // Katman 2: Üst aydınlatma — AppBar + üst kısmı sayfayla bütünleştirir
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            height: 280,
+            decoration: BoxDecoration(
+              gradient: RadialGradient(
+                center: Alignment.topCenter,
+                radius: 1.15,
+                colors: [
+                  primary.withValues(alpha: isDark ? 0.30 : 0.18),
+                  primary.withValues(alpha: 0.0),
+                ],
+              ),
+            ),
+          ),
+        ),
+        // Katman 3: Tematik arka plan çizimleri (CustomPaint)
         Positioned.fill(
           child: CustomPaint(
             painter: _BackgroundPainter(scientistName, primary, isDark),
           ),
         ),
-        // Katman 3: İçerik
+        // Katman 4: İçerik
         child,
-        // Katman 4: Dekoratif ön-plan overlay (içeriğin üstünde ama IgnorePointer ile dokunulamaz)
+        // Katman 5: Dekoratif ön-plan overlay (içeriğin üstünde ama IgnorePointer ile dokunulamaz)
         // Sadece köşe / kenar bölgelerine hafif dekoratif elementler ekler
         Positioned.fill(
           child: IgnorePointer(
@@ -66,10 +85,10 @@ class _BackgroundPainter extends CustomPainter {
 
   _BackgroundPainter(this.name, this.primaryColor, this.isDark);
 
-  // Opaklık seviyeleri: eskiye göre ~2.5x artırıldı
-  double get _strokeAlpha => isDark ? 0.42 : 0.28;
-  double get _fillAlpha => isDark ? 0.26 : 0.17;
-  double get _textAlpha => isDark ? 0.52 : 0.34;
+  // Opaklık seviyeleri: daha belirgin ve profesyonel
+  double get _strokeAlpha => isDark ? 0.46 : 0.32;
+  double get _fillAlpha => isDark ? 0.29 : 0.19;
+  double get _textAlpha => isDark ? 0.56 : 0.38;
 
   Paint _sp([double? a]) => Paint()
     ..color = primaryColor.withValues(alpha: a ?? _strokeAlpha)

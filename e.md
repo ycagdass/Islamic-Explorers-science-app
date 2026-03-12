@@ -1,166 +1,118 @@
-Mevcut Flutter projesi büyük ölçüde tamamlandı ve çalışıyor. Projeyi baştan yazma. Sadece aşağıdaki değişiklikleri yap. Mevcut çalışan sistemi bozma.
+Mevcut Flutter projesinde bilim insanı detay sayfalarının görsel tasarımını iyileştir. Mevcut çalışan yapıyı bozma, sadece aşağıdaki tasarım ve yerleşim sorunlarını düzelt. Kod responsive, derlenebilir ve çalışır durumda kalsın.
 
 GENEL KURAL
-- Sadece gerekli yerleri değiştir.
-- Mevcut çalışan özellikleri koru.
-- Kod derlenebilir, çalışabilir ve temiz kalsın.
-- Material 3 uyumlu, modern ve responsive yapı korunmalı.
-- Gerekirse internetten yardım alabilirsin.
+- Bu düzenlemeler tüm bilim insanı detay sayfaları için geçerli olsun.
+- Telefon ve tabletlerde düzgün görünmeli.
+- Mevcut işleyen özellikler bozulmamalı.
+- Modern, estetik, profesyonel ve Material 3 uyumlu görünüm korunmalı.
 
-ÖNEMLİ: KORUNMASI GEREKEN ÖZELLİKLER
-Aşağıdaki özellikler kesinlikle korunmalı, kaldırılmamalı ve bozulmamalı:
+1) ÜST KISIMDAKİ FAZLA BEYAZ ALANI DÜZELT
+Şu anda detay sayfasının üst tarafında fazla boş ve düz beyaz bir alan var. Bu kötü görünüyor.
 
-- bilim insanı ses dosyası ekleme sistemi
-- ses oynatma sistemi
-- ayarlardan ses dosyası değiştirme
-- bilim insanı sayfasında otomatik ses oynatma
-- tema ayarı (Light / Dark)
-- içerik yönetimi sistemi
-- ayarlara parola ile giriş (şifre: 1881)
-- karşılama ekranı (sadece ilk açılışta gösterilen onboarding)
-- bilim insanı fotoğraf değiştirme sistemi
-- bilim insanı hakkında metni düzenleme sistemi
-- bilim insanı eserleri düzenleme sistemi
-
-Do not refactor the audio system unless necessary.
-
-1) SADECE ŞU ÖZELLİKLERİ KALDIR
-Aşağıdaki iki özelliği projeden tamamen kaldır:
-
-- uygulama ikonunu değiştirme
-- uygulama adını değiştirme
-
-Yapılması gerekenler:
-- Ayarlar / İçerik Yönetimi içindeki bu iki menüyü kaldır.
-- Bu iki özellikle ilgili ekranları kaldır.
-- Bu iki özellikle ilgili gereksiz widget, service, helper ve provider kodlarını temizle.
-- Kullanılmayan importları kaldır.
-- Kullanılmayan paketleri pubspec.yaml dosyasından kaldır.
-- Mevcut yüklü gelen uygulama adı ve uygulama ikonu aynen kalsın.
-
-2) AYARLAR MENÜSÜNÜ GÜNCELLE
-Ayarlar ekranı sade ve düzenli kalsın.
-
-Ayarlar içinde şu yapı olsun:
-
-- İçerik Yönetimi
-- Hakkında
-
-İçerik Yönetimi içinde şunlar kalmalı:
-- tema ayarı (Light / Dark)
-- bilim insanlarının fotoğraflarını değiştirme
-- bilim insanlarının ses dosyalarını değiştirme
-- bilim insanlarının hakkında metinlerini düzenleme
-- bilim insanlarının eserlerini düzenleme
-
-Hakkında sayfasında şunlar olsun:
-- uygulama adı
-- sürüm bilgisi
-- geliştiriciler
-- kısa açıklama
-
-Hakkında sayfası sadece okunabilir olsun.
-
-3) UI / UX İYİLEŞTİRMESİ YAP
-Mevcut tasarım dilini bozma ama görünümü iyileştir.
-
-Şunları düzenle:
-- ana sayfa kart boyutları
-- spacing
-- padding
-- font boyutları
-- hizalama
-- buton yerleşimi
+Bunu düzeltmek için:
+- Üst beyaz alanı sade şekilde bırakma.
+- Bu alanı detay sayfasının tasarımına dahil et.
+- Gerekirse opaklığı düşük tematik arka plan ekle.
+- Gerekirse profil alanı ile üst bölüm arasında görsel bütünlük oluştur.
+- Sayfanın üst kısmı boş görünmemeli.
+- Ancak çok kalabalık da olmasın.
 
 Amaç:
-- telefon ve tablette daha dengeli görünüm
-- kartların üst üste binmemesi
-- boşlukların düzgün olması
-- ekranın daha profesyonel görünmesi
+- Üst alan artık “boş beyaz alan” gibi görünmesin.
+- Sayfanın bir parçası gibi dursun.
 
-4) HOME BAR / SİSTEM BAR ÇAKIŞMASINI DÜZELT
-Uygulamada bazı yerlerde sistem alanlarıyla çakışma olabiliyor.
+2) ARKA PLANDAKİ SEMBOLLERİ YENİDEN TASARLA
+Şu anda bilim insanları ile ilgili arka plan sembolleri çok yapay ve basit duruyor.
+Bazıları da estetik görünmüyor.
 
-Bunu tamamen düzelt:
-- SafeArea doğru kullanılsın
-- üst status bar ile çakışma olmasın
-- alt navigation / home bar ile çakışma olmasın
-- geri tuşu, alt sistem alanı ve UI elemanları birbirinin üstüne gelmesin
-- telefon ve tabletlerde tüm sayfalar güvenli alan içinde kalsın
+Yeni kurallar:
+- Telefonun varsayılan emojilerini kullanma.
+- Basit emoji veya rastgele ikon kullanma.
+- Daha profesyonel, tematik ve modern semboller kullan.
+- Vektör benzeri, çizgisel, dekoratif veya soyut bilimsel pattern mantığında olsun.
+- Opaklık düşük olabilir ama anlamsız görünmesin.
+- Semboller sayfayı güçlendirsin, basitleştirmesin.
 
-5) RESPONSIVE YAPIYI KORU VE İYİLEŞTİR
-Uygulama şu cihazlarda düzgün çalışmalı:
+Her bilim insanı için özel tasarım dili uygula:
+
+- Harezmi → sayılar, cebir, geometrik matematik desenleri
+- Ali Kuşçu → yıldızlar, gök cisimleri, astronomi çizgileri
+- İbn-i Sina → tıp, şifa, eski el yazmaları, medikal semboller
+- Uluğ Bey → yıldız haritası, gözlem, astronomi cetvelleri
+- Cahit Arf → matematiksel formüller, sayı desenleri, cebirsel yapı
+
+3) PROFİL FOTOĞRAFININ ALTINDAKİ TEMATİK ALANI GÜÇLENDİR
+Profil fotoğrafının altına eklenen tematik alan şu anda çok basit ve zayıf görünüyor.
+
+Bunu geliştir:
+- Daha profesyonel görünmeli
+- Sadece birkaç basit yazı veya küçük simge gibi durmamalı
+- Küçük bir tematik bilgi paneli / formül paneli / sembol paneli gibi görünebilir
+- Profili destekleyen bir tasarım öğesi olsun
+- Bilim insanının alanını temsil etsin
+- Modern UI ile uyumlu olsun
+
+Örnek:
+- Cahit Arf için profilin altında formül ve matematik temalı dekoratif panel
+- İbn-i Sina için tıp ve el yazması notlar hissi veren panel
+- Harezmi için sayı ve cebir temalı panel
+
+Bu yapı tüm bilim insanlarında benzer kalite seviyesinde olsun.
+
+4) SES ALANINI KÜÇÜLT
+Detay sayfasındaki ses oynatma alanı fazla yer kaplıyor.
+
+Bunu düzenle:
+- Ses oynatma alanını daha kompakt hale getir
+- Daha az yükseklik kaplasın
+- Daha az padding kullan
+- Kullanıcı Play/Pause ve temel kontrolleri rahatça görebilsin
+- Alan küçülsün ama kullanılabilirlik bozulmasın
+
+Amaç:
+- Sayfada daha fazla içerik alanı kazanmak
+- Özellikle tabletlerde daha dengeli bir görünüm elde etmek
+
+5) HAKKINDA VE ESERLER KISMI DAHA DENGELİ OLSUN
+Uzun metin girildiğinde sayfa düzeni bozulmamalı.
+
+Kurallar:
+- Hakkında bölümü çok uzarsa Eserleri kısmı kaybolmamalı
+- Bölümler birbirini ezmemeli
+- Gerekirse ilgili alanlar scrollable olabilir
+- Eserleri bölümü her durumda erişilebilir olmalı
+- Layout taşmamalı
+- Render overflow hataları giderilmeli
+
+6) TÜM BİLİM İNSANLARI İÇİN AYNI KALİTEYİ UYGULA
+Bu düzeltmeler sadece tek bir kişi için değil, tüm bilim insanlarının detay sayfaları için geçerli olsun.
+
+Her detay sayfasında:
+- üst boş alan düzeltilmiş olsun
+- arka plan sembolleri profesyonel olsun
+- profil altındaki tematik alan güçlü ve estetik olsun
+- ses alanı daha kompakt olsun
+- hakkında ve eserler kısmı dengeli olsun
+
+7) RESPONSIVE KALSIN
+Tüm bu düzenlemeler:
 - telefon
 - küçük tablet
 - büyük tablet
 
-Şunlar ekran boyutuna göre dengelensin:
-- kart boyutları
-- spacing
-- padding
-- text size
-- icon size
-- image size
+ekranlarında düzgün görünmeli.
 
-Overflow, clipping ve görünmeyen buton sorunları tamamen giderilsin.
+Şunlara dikkat et:
+- taşma olmasın
+- butonlar kaybolmasın
+- içerikler üst üste binmesin
+- spacing dengeli olsun
+- üst ve alt sistem alanlarıyla çakışma olmasın
 
-6) BİLİM İNSANI DETAY SAYFALARINI GÖRSEL OLARAK İYİLEŞTİR
-Detay sayfalarında kullanılan arka plan sembolleri daha estetik olsun.
-
-Kurallar:
-- emoji kullanma
-- modern, minimal, vektör benzeri dekoratif semboller kullan
-- düşük opaklıkla arka planda yer alsın
-- metni kapatmasın
-- responsive olsun
-- profesyonel görünsün
-
-Örnek temalar:
-- Harezmi → matematik sembolleri
-- Ali Kuşçu → astronomi sembolleri
-- İbn-i Sina → tıp / el yazması / şifa temaları
-- Uluğ Bey → yıldız haritası / gözlem teması
-- Cahit Arf → matematik formülleri / cebirsel yapılar
-
-7) PERFORMANS OPTİMİZASYONU YAP
-Uygulamayı optimize et ama çalışan yapıyı bozma.
-
-Şunları yap:
-- gereksiz rebuild’leri azalt
-- mümkün olan yerlerde StatelessWidget kullan
-- tekrar eden UI parçalarını ayrı widgetlara böl
-- gereksiz state kullanımını azalt
-- kullanılmayan kodları temizle
-- kullanılmayan importları kaldır
-- gereksiz paketleri kaldır
-- navigation akışını sadeleştir ama bozma
-- görsel yükleme ve layout hesaplamalarını optimize et
-
-Amaç:
-- uygulama daha hızlı açılsın
-- daha akıcı çalışsın
-- daha az bellek kullansın
-
-8) MEVCUT ÖZELLİKLERİ BOZMA
-Tekrar hatırlatma:
-Aşağıdaki sistemlere dokunma, sadece gerektiği kadar koru:
-
-- ses sistemi
-- tema sistemi
-- parola koruması
-- onboarding / karşılama ekranı
-- içerik yönetimi
-- bilim insanı içerikleri
-- fotoğraf ve ses seçme alanları
-
-Sadece uygulama adı değiştirme ve uygulama ikonu değiştirme özelliklerini kaldır.
-
-9) ÇIKTI
+8) ÇIKTI
 Aşağıdakileri ver:
 - değiştirilen dart dosyaları
-- kaldırılan kodların kısa özeti
-- yapılan UI iyileştirmeleri
-- yapılan performans optimizasyonları
-- gerekiyorsa güncellenmiş pubspec.yaml
+- gerekiyorsa yeni widget dosyaları
+- yapılan UI iyileştirmelerinin kısa özeti
 
 Kod eksiksiz, derlenebilir ve çalışır durumda olmalı.
