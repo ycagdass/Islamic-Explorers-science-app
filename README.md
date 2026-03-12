@@ -128,8 +128,8 @@ lib/
 
 ```bash
 # 1. Repoyu klonla
-git clone https://github.com/ycagdass/copilot-worktree-2026-03-07T12-06-55.git
-cd copilot-worktree-2026-03-07T12-06-55
+git clone https://github.com/ycagdass/Islamic-Explorers-science-app.git
+cd Islamic-Explorers-science-app
 
 # 2. Bağımlılıkları yükle
 flutter pub get
